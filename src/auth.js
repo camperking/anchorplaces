@@ -1,5 +1,6 @@
 import { db } from './server.js';
 import crypto from 'crypto';
+import getPwdHash from './pwdHash.js';
 
 //const users = db.collection('user');
 
@@ -23,13 +24,17 @@ export default function authenticate(req, res, next) {
 
 
     } else if (req.body.username && req.body.password) {
+        const usernamePattern = /^([A-Za-z0-9€#\.+-]){4,20}$/gm;
+
+        if (!usernamePattern.test(req.body.username)) res.end('bad username');
+
         var username = req.body.username;
         var password = req.body.password;
 
         users.find({ 'username': username }).toArray((err, docs) => {
             if (err) next(err);
 
-            if (docs.length >= 1 && password === docs[0].password) {    //login successful
+            if (docs.length >= 1 && getPwdHash(password) === docs[0].password) {    //login successful
                 session.user = username;       //set session
 
                 var temphash = username + Math.random();

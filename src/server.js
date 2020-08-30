@@ -10,7 +10,7 @@ const url = 'mongodb://node:arsch123@localhost:27017/test';
 const dbname = 'test';
 export var db;
 const app = polka();
-const dbClient = new MongoClient(url);
+const dbClient = new MongoClient(url, {useUnifiedTopology: true});
 
 
 const { PORT, NODE_ENV } = process.env;

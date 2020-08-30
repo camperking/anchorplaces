@@ -1,7 +1,11 @@
 import { db } from '../server.js';
 import authenticate from '../auth.js';
+import getPwdHash from '../pwdHash.js';
+
 
 export async function post(req, res, next) {
+    const usernamePattern = /^([A-Za-z0-9€#\.+-]){4,20}$/gm;
+    if (!usernamePattern.test(req.body.username)) res.end('bad username');
     var username = req.body.newUsername;
     var password = req.body.newPassword;
         
@@ -11,7 +15,7 @@ export async function post(req, res, next) {
         if (err) next(err);
 
         if(docs.length == 0) {      //user not in database
-            users.insertOne({'username': username, 'password': password}, (err, result) => {
+            users.insertOne({'username': username, 'password': getPwdHash(password)}, (err, result) => {
                 if (err) next(err);
                 //user created
 
