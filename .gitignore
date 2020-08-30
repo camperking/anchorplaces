@@ -4,3 +4,7 @@
 yarn-error.log
 /cypress/screenshots/
 /__sapper__/
+.vscode/launch.json
+/cypress/
+webpack.config.js
+cypress.json
