@@ -18,7 +18,7 @@ const dev = NODE_ENV === 'development';
 
 app
 	.use(cookieSession({ keys: ['key'] }))
-	.use(bodyParser.urlencoded())
+	.use(bodyParser.urlencoded({ extended: false }))
 	.use(authenticate);
 
 app.use(

@@ -19,6 +19,7 @@ export default function authenticate(req, res, next) {
             }
 
             session.auth = auth;
+            session.user = docs[0].username;
             next();
         });
 
@@ -35,7 +36,7 @@ export default function authenticate(req, res, next) {
             if (err) next(err);
 
             if (docs.length >= 1 && getPwdHash(password) === docs[0].password) {    //login successful
-                session.user = username;       //set session
+                //session.user = username;       //set session
 
                 var temphash = username + Math.random();
                 var hash = crypto.createHash('sha256');

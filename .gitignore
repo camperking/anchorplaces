@@ -7,3 +7,4 @@ yarn-error.log
 .vscode/launch.json
 /cypress/
 cypress.json
+/static/pics/

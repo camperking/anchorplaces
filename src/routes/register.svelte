@@ -1,14 +1,14 @@
 <script>
 	import { stores } from '@sapper/app';
-	import { onMount } from "svelte";
+	//import { onMount } from "svelte";
 
     const { preloading, page, session } = stores();
     
     const usernamePattern = '^([A-Za-z0-9€#\.+-]){4,20}$';
 
-	onMount(() => {
-    	console.log($session.auth);
- 	 });
+	//onMount(() => {
+    //	console.log($session.auth);
+ 	// });
 </script>
 
 {#if !$session.auth}
