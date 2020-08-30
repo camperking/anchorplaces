@@ -1,3 +1,15 @@
+<script>
+	import { stores } from '@sapper/app';
+	import { onMount } from "svelte";
+
+	const { preloading, page, session } = stores();
+
+
+	onMount(() => {
+    	console.log($session.auth);
+ 	 });
+</script>
+
 <style>
 	h1, figure, p {
 		text-align: center;
@@ -42,19 +54,5 @@
 	<img alt='Success Kid' src='successkid.jpg'>
 	<figcaption>Have fun with Sapper!</figcaption>
 </figure>
-
-<form action="/login" method="post">
-    <div>
-        <label>Username:<input type="text" name="username"/></label>
-        
-    </div>
-    <div>
-        <label>Password:<input type="password" name="password"/></label>
-        
-    </div>
-    <div>
-        <input type="submit" value="Log In"/>
-    </div>
-</form>
 
 <p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>

@@ -3,64 +3,44 @@ import polka from 'polka';
 import compression from 'compression';
 import * as sapper from '@sapper/server';
 import bodyParser from 'body-parser';
-//import passport from 'passport';
-//import { Strategy } from 'passport-local';
 import authenticate from './auth.js';
+import cookieSession from 'cookie-session';
+import { MongoClient } from 'mongodb';
+const url = 'mongodb://node:arsch123@localhost:27017/test';
+const dbname = 'test';
+export var db;
+const app = polka();
+const dbClient = new MongoClient(url);
 
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 
-// passport.use(new Strategy({}, (username, password, done) => {
-// 	console.log('username')
-// 	console.log(username);
-// 	if (username == "asd") {
-// 		return done(null, username);
-// 	} else {
-// 		return done(null, false);
-// 	}
-// }));
-
-// passport.serializeUser(function (user, cb) {
-//     cb(null, user);
-// });
-
-// passport.deserializeUser(function (obj, cb) {
-//     cb(null, obj);
-// });
-
-// function authenticate  (res, req, next) {
-//     console.log("qwerty");
-//     next();
-// }
-
-
-polka() // You can also use Express
-	//.use(passport.initialize())
+app
+	.use(cookieSession({ keys: ['key'] }))
 	.use(bodyParser.urlencoded())
-	// .use(passport.session())
-	// .post('/login', passport.authenticate('local', (req, res) => {
-	// 	console.log(req);
-	// 	//res.redirect('/');
-	// }))
-	//.post('/login', passport.authenticate('local'))
-	// .post('/login', (req, res, done) => {
-	// 	console.log(req.body);
-	// 	done(null);
-	// })
-	// .post('/login', (req, res, done) => {
-	// 	const authResult = authenticate(req.body.username, req.body.password)
-	// 	if (authResult) {
-	// 		res.redirect('/');
-	// 	}
-	// })
-	//.use(authenticate)
-	.post('/login', authenticate)
-	.use(
-		compression({ threshold: 0 }),
-		sirv('static', { dev }),
-		sapper.middleware()
-	)
-	.listen(PORT, err => {
-		if (err) console.log('error', err);
-	});
+	.use(authenticate);
+
+app.use(
+	compression({ threshold: 0 }),
+	sirv('static', { dev }),
+	sapper.middleware({		// populate sapper store
+			session: (req, res) => ({
+			id: req.session.id,
+			auth: req.session.auth
+		})
+	})
+);
+
+dbClient.connect((err) => {
+	if (err) {
+		console.log("no db connection");
+	} else {
+		// export database object
+		db = dbClient.db(dbname);
+
+		app.listen(PORT, err => {
+			if (err) console.log('error', err);
+		})
+	}
+})
