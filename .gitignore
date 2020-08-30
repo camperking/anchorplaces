@@ -6,5 +6,4 @@ yarn-error.log
 /__sapper__/
 .vscode/launch.json
 /cypress/
-webpack.config.js
 cypress.json
