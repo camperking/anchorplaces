@@ -1,15 +1,17 @@
 import { db } from './server.js';
 import crypto from 'crypto';
-import getPwdHash from './pwdHash.js';
+import getHash from './hash.js';
 
-//const users = db.collection('user');
-
+// authentication middleware
 
 export default function authenticate(req, res, next) {
     const users = db.collection('users');
-    var auth = false;
-    var session = req.session;
+    let auth = false;
+    let session = req.session;
 
+    //console.log(req.body);
+
+    // previous session with id
     if (req.session.id) {
         users.find({ 'sessionid': req.session.id }).toArray((err, docs) => {
             if (err) next(err);
@@ -18,47 +20,54 @@ export default function authenticate(req, res, next) {
                 auth = true;
             }
 
-            session.auth = auth;
-            session.user = docs[0].username;
+            // session.auth = auth;
+            // session.user = docs[0].username;
             next();
         });
+    } else { next() }
 
+        // login with username password
+    // } else if (req.body.username && req.body.password) { 
+    //     const usernamePattern = /^([A-Za-z0-9€#\.+-]){4,20}$/gm;
 
-    } else if (req.body.username && req.body.password) {
-        const usernamePattern = /^([A-Za-z0-9€#\.+-]){4,20}$/gm;
+    //     if (!usernamePattern.test(req.body.username)) res.end('bad username');
 
-        if (!usernamePattern.test(req.body.username)) res.end('bad username');
+    //     var username = req.body.username;
+    //     var password = req.body.password;
 
-        var username = req.body.username;
-        var password = req.body.password;
+    //     users.find({ 'username': username }).toArray((err, docs) => {
+    //         if (err) next(err);
 
-        users.find({ 'username': username }).toArray((err, docs) => {
-            if (err) next(err);
+    //         if (docs.length >= 1 && getPwdHash(password) === docs[0].password) {    //login successful
 
-            if (docs.length >= 1 && getPwdHash(password) === docs[0].password) {    //login successful
-                //session.user = username;       //set session
+    //             var temphash = username + Math.random();
+    //             var hash = crypto.createHash('sha256');
+    //             hash.update(temphash);
+    //             var newSessionId = hash.digest('base64');
 
-                var temphash = username + Math.random();
-                var hash = crypto.createHash('sha256');
-                hash.update(temphash);
-                var newSessionId = hash.digest('base64');
+    //             //update session id
+    //             users.updateOne({ 'username': username },   
+    //                 { $set: { 'sessionid': newSessionId } },
+    //                 (err, res) => {
+    //                     if (err) next(err);
 
-                users.updateOne({ 'username': username },   //update session id
-                    { $set: { 'sessionid': newSessionId } },
-                    (err, res) => {
-                        if (err) next(err);
-                        session.id = newSessionId;     //set session to header for cookies
-                        session.auth = true;
-                        next();
-                    })
-            } else {
-                console.log('user not found or password incorrect');
-                session.id = null;
-                session.auth = null;
-                next();
-            }
-        });
-    } else {
-        next();
-    }
+    //                     //set session to header for cookies
+    //                     session.id = newSessionId;     
+    //                     session.auth = true;
+    //                     next();
+
+    //                 })
+
+    //         } else {
+
+    //             console.log('user not found or password incorrect');
+    //             session.id = null;
+    //             session.auth = null;
+    //             next();
+
+    //         }
+    //     });
+    // } else {
+    //     next();
+    // }
 }

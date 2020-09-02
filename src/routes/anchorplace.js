@@ -1,25 +1,45 @@
-import formidable from 'formidable';
 import { db } from '../server.js';
+import formidable from 'formidable';
 import Jimp from 'jimp';
 
 const pictureDir = './static/pics/';
+const webPicDir = './pics/';
 
-export async function post(req, res, next) {
-    if (!req.session.auth) res.end('no access');
+export function get(req, res, next) {
+
+    let n = 6;
+
+    if (Number(req.query.n) > 1) n = Number(req.query.n);
+
+    const placesdb = db.collection('places');
+
+    placesdb.find({}).limit(n).toArray((err, docs) => {
+        if (err) next(err);
+
+        res.end(JSON.stringify(docs));
+    });
+
+}
+
+export function post(req, res, next) {
+    if (!req.session.auth) next('no access');
+
+    res.statusCode = 200;
+    res.end();
 
     const form = formidable({multiples: true, uploadDir: pictureDir, keepExtensions: true});
     const places = db.collection('places');
     
 
     form.parse(req, (err, fields, files) => {
-        if (err) res.end('bad formular input');
+        if (err) console.log('bad formular input');
 
         //todo check and escape input
 
         var pictures = [];
 
         var doc = {     // document for database
-            'author': req.session.user,
+            'author': req.session.user, // get user from db via sessionid
             'locationName': fields.name,
             'location': {
                 'type': 'Point',
@@ -31,6 +51,7 @@ export async function post(req, res, next) {
         };
 
         if (files.pictures.path) {      // only one picture uploaded
+            //todo better destructure let {path, name, size, type} = pictures;
             pictures.push({
                 'path': files.pictures.path,
                 'name': files.pictures.name,
@@ -48,40 +69,44 @@ export async function post(req, res, next) {
             });
         }
 
-        
+
+        // pics promise array
         let processPics = pictures.map((pic, index) => {
+
             return new Promise((resolve, reject) => {
+
                 Jimp.read(pic.path, (err, image) => {
                     if (err) reject(err);
 
                     const newPicPath = pic.path + '.webImage';
+                    let filename = pic.path.split('\\');
+                    const webPath = webPicDir + filename[1] + '.webImage'
 
                     image.resize(1024, Jimp.AUTO);
                     image.write(newPicPath);
                
                     // update document for database
-                    pic.webPath = newPicPath;
+                    pic.webPath = webPath;
 
                     resolve();
+                    
                 });
             })
         });
 
         Promise.all(processPics).then(() => {
-            console.log(doc);
-            //insert into database
-            places.insertOne(doc, (err, result) => {
-                if (err) res.end(err);
 
-                // redirect to new entry
-                res.statusCode = 302;
-                res.setHeader('Location', '/');
-                res.end();
+            // insert into database
+            places.insertOne(doc, (err, result) => {
+                if (err) console.log(err);
+
             });
+
         }).catch(err => {
-            res.end(err);
+            console.log(err);
         });
-        
+
     });
 
 }
+

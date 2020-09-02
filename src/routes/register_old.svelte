@@ -12,7 +12,7 @@
 </script>
 
 {#if !$session.auth}
-<form action="/register" method="post">
+<form action="/register" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <label for="newUsername">Username:</label>
         <input type="text" name="newUsername" pattern={usernamePattern} required />

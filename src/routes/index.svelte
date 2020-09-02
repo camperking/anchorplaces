@@ -1,58 +1,74 @@
+<script context="module">
+
+export async function preload() {
+	const res = await this.fetch('anchorplace?n=16');
+	const places = await res.json();
+	return { places };
+}
+</script>
+
 <script>
 	import { stores } from '@sapper/app';
-	import { onMount } from "svelte";
+	import { onMount } from 'svelte';
+	import Anchorplace from '../components/Anchorplace.svelte';
 
 	const { preloading, page, session } = stores();
 
+	export let places;
 
 	onMount(() => {
-    	console.log($session.auth);
+		console.log($session.id);
+		
  	 });
 </script>
 
 <style>
-	h1, figure, p {
+	/* h1, figure, p {
 		text-align: center;
 		margin: 0 auto;
-	}
+	} */
 
-	h1 {
+	/* h1 {
 		font-size: 2.8em;
 		text-transform: uppercase;
 		font-weight: 700;
 		margin: 0 0 0.5em 0;
-	}
+	} */
 
-	figure {
+	/* figure {
 		margin: 0 0 1em 0;
-	}
+	} */
 
-	img {
+	/* img {
 		width: 100%;
 		max-width: 400px;
 		margin: 0 0 1em 0;
-	}
+	} */
 
 	p {
 		margin: 1em auto;
 	}
 
-	@media (min-width: 480px) {
+	/* @media (min-width: 480px) {
 		h1 {
 			font-size: 4em;
 		}
-	}
+	} */
 </style>
 
 <svelte:head>
-	<title>Sapper project template</title>
+	<title>Anchorplace Map</title>
 </svelte:head>
 
-<h1>Great success!</h1>
+<!-- <h1>Great success!</h1>
 
 <figure>
 	<img alt='Success Kid' src='successkid.jpg'>
 	<figcaption>Have fun with Sapper!</figcaption>
-</figure>
+</figure> -->
+
+{#each places as place}
+<Anchorplace place={place} />
+{/each}
 
 <p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>

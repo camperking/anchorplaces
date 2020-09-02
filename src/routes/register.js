@@ -1,6 +1,6 @@
 import { db } from '../server.js';
 import authenticate from '../auth.js';
-import getPwdHash from '../pwdHash.js';
+import getHash from '../hash.js';
 
 
 export async function post(req, res, next) {
@@ -15,7 +15,7 @@ export async function post(req, res, next) {
         if (err) next(err);
 
         if(docs.length == 0) {      //user not in database
-            users.insertOne({'username': username, 'password': getPwdHash(password)}, (err, result) => {
+            users.insertOne({'username': username, 'password': getHash(password)}, (err, result) => {
                 if (err) next(err);
                 //user created
 

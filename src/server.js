@@ -18,18 +18,19 @@ const dev = NODE_ENV === 'development';
 
 app
 	.use(cookieSession({ keys: ['key'] }))
-	.use(bodyParser.urlencoded({ extended: false }))
-	.use(authenticate);
+	//.use(bodyParser.urlencoded({ extended: false }))
+	.use(bodyParser.json());
+	//.use(authenticate);
 
 app.use(
 	compression({ threshold: 0 }),
 	sirv('static', { dev }),
 	sapper.middleware({		// populate sapper store
 			session: (req, res) => ({
-			id: req.session.id,
-			auth: req.session.auth
+			id: req.session.id
 		})
 	})
+	//sapper.middleware()
 );
 
 dbClient.connect((err) => {

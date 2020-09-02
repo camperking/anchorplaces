@@ -53,11 +53,11 @@
 
 <nav>
 	<ul>
-		<li><a aria-current="{segment === undefined ? 'page' : undefined}" href=".">home</a></li>
+		<li><a rel=prefetch aria-current="{segment === undefined ? 'page' : undefined}" href=".">home</a></li>
 
 		<li><a aria-current="{segment === 'about' ? 'page' : undefined}" href="about">about</a></li>
 
-		{#if $session.auth} 
+		{#if $session.id} 
 			<li><a aria-current="{segment === 'add' ? 'page' : undefined}" href="add">add</a></li>
 		{/if}
 

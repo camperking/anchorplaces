@@ -1,28 +1,53 @@
 <script>
   import { stores } from "@sapper/app";
+  import { goto } from '@sapper/app';
 
   const { preloading, page, session } = stores();
 
   let latitude = 0;
   let longitude = 0;
 
+
   function getLocation() {
+
     if (navigator.geolocation) {
+
       navigator.geolocation.getCurrentPosition(position => {
+
         latitude = position.coords.latitude;
         longitude = position.coords.longitude;
+        
       });
+
     } //else {
     //    x.innerHTML = "Geolocation is not supported by this browser.";
     //}
   }
+
+
+  function add() {
+
+    if(form.reportValidity()) {
+      const formData = new FormData(form);
+
+      const performGoto = async (form) => {
+
+        await goto('/');
+        fetch('anchorplace', {method: 'POST', body: formData});
+      }
+
+      performGoto(form);
+
+    }
+  }
+
 </script>
 
 <style>
 
 </style>
 
-<form action="/add" enctype="multipart/form-data" method="post">
+<form id="form" action="/anchorplace" enctype="multipart/form-data" method="post">
   <div>
     <label for="name">name</label>
     <input type="text" name="name" required />
@@ -31,7 +56,7 @@
   <div>
     <div>
       <label for="latitude">latitude</label>
-      <input type="text" name="latitude" value={latitude} required />
+      <input name="latitude" value={latitude} required />
     </div>
 
     <div>
@@ -60,6 +85,6 @@
     </div>
 
     <div>
-        <input type="submit" value="Submit" />
+        <input on:click={add} type="button" value="Submit" />
     </div>
 </form>
