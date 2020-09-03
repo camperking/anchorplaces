@@ -3,7 +3,6 @@ import polka from 'polka';
 import compression from 'compression';
 import * as sapper from '@sapper/server';
 import bodyParser from 'body-parser';
-import authenticate from './auth.js';
 import cookieSession from 'cookie-session';
 import { MongoClient } from 'mongodb';
 const url = 'mongodb://node:arsch123@localhost:27017/test';
