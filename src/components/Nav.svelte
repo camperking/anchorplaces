@@ -55,6 +55,8 @@
 	<ul>
 		<li><a rel=prefetch aria-current="{segment === undefined ? 'page' : undefined}" href=".">home</a></li>
 
+		<li><a aria-current="{segment === 'map' ? 'page' : undefined}" href="map">map</a></li>
+
 		<li><a aria-current="{segment === 'about' ? 'page' : undefined}" href="about">about</a></li>
 
 		{#if $session.id} 

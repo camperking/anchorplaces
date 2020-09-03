@@ -17,34 +17,24 @@ export async function post(req, res, next) {
 
     if ((username && password) && usernamePattern.test(username)) {
         
-        users.find({ 'username': username }).toArray((err, docs) => {
-            if (err) res.end(err);
-            console.log('find user');
-            if (docs.length >= 1 && getHash(password) === docs[0].password) {    //login successful
-                console.log('user found');
+        const user = await users.find({ 'username': username }).toArray();
 
-                let newSessionId = getHash(username + Math.random());
+        if (user.length >= 1 && getHash(password) === user[0].password) {    //login successful
 
-                // update session id
-                users.updateOne({ 'username': username },   
-                    { $set: { 'sessionid': newSessionId } },
-                    (err, result) => {
-                        if (err) res.end(err);
+            let newSessionId = getHash(username + Math.random());
 
-                        //set session to header for cookies
-                        session.id = newSessionId;
+            // update session id
+            await users.updateOne({ 'username': username },
+                 { $set: { 'sessionid': newSessionId } });
 
-                        res.statusCode = 200;
-                        res.end(JSON.stringify({id: session.id}));
-                    });
+                 session.id = newSessionId;
 
-            } else {
-                // user not found or password incorrect
-                res.end(JSON.stringify({id: session.id}));
+                 res.statusCode = 200;
+                 
+        }
 
-            }
-        });
-    } else {
         res.end(JSON.stringify({id: session.id}));
+        
     }
+
 }

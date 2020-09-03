@@ -38,7 +38,8 @@ export function post(req, res, next) {
 
         var pictures = [];
 
-        var doc = {     // document for database
+        // document for database
+        var doc = {     // const ?
             'author': req.session.user, // get user from db via sessionid
             'locationName': fields.name,
             'location': {
@@ -51,23 +52,35 @@ export function post(req, res, next) {
         };
 
         if (files.pictures.path) {      // only one picture uploaded
-            //todo better destructure let {path, name, size, type} = pictures;
-            pictures.push({
-                'path': files.pictures.path,
-                'name': files.pictures.name,
-                'size': files.pictures.size,
-                'type': files.pictures.type
-            });
+
+            let {path, name, size, type} = files.pictures;
+            pictures.push({path, name, size, type});
+
+            // pictures.push({
+            //     'path': files.pictures.path,
+            //     'name': files.pictures.name,
+            //     'size': files.pictures.size,
+            //     'type': files.pictures.type
+            // });
+
         } else {    // more pics uploaded
             files.pictures.forEach((val, index) => {
-                pictures.push({
-                    'path': files.pictures[index].path,
-                    'name': files.pictures[index].name,
-                    'size': files.pictures[index].size,
-                    'type': files.pictures[index].type
-                });
+
+                let {path, name, size, type} = files.pictures[index];
+                pictures.push({path, name, size, type});
+
+                // pictures.push({
+                //     'path': files.pictures[index].path,
+                //     'name': files.pictures[index].name,
+                //     'size': files.pictures[index].size,
+                //     'type': files.pictures[index].type
+                // });
+
             });
         }
+
+        
+        
 
 
         // pics promise array

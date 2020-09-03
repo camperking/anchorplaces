@@ -24,7 +24,7 @@ function login() {
             })
             .then(response => response.json())
             .then(data => {
-                $session.id = data.id;
+                $session.id = data.id;      // put sessioin id in sapper store
             })
             .then(goto('/account/'))
             .catch(err => console.log(err));
@@ -49,11 +49,11 @@ function login() {
 <form id="form">
     <div>
         <label for="username">Username:</label>
-        <input type="text" name="username" pattern={usernamePattern} bind:value={username} required />
+        <input type="text" bind:value={username} pattern={usernamePattern} required />
     </div>
     <div>
         <label for="password">Password:</label>
-        <input type="password" name="password" bind:value={password} required />
+        <input type="password" bind:value={password} required />
     </div>
     <div>
         <input on:click={login} type="button" value="Log In"/>

@@ -7,11 +7,13 @@ import authenticate from './auth.js';
 import cookieSession from 'cookie-session';
 import { MongoClient } from 'mongodb';
 const url = 'mongodb://node:arsch123@localhost:27017/test';
-const dbname = 'test';
-export var db;
-const app = polka();
-const dbClient = new MongoClient(url, {useUnifiedTopology: true});
 
+
+const app = polka();
+
+const dbname = 'test';
+const dbClient = new MongoClient(url, {useUnifiedTopology: true});
+export var db;
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
