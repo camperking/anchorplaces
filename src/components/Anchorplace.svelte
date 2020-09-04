@@ -10,8 +10,8 @@ img {
 </style>
 
 <div>
-<h2>{place.locationName}</h2>
-<img src={place.pictures[0].webPath} alt="anchorplace" />
+<h2>{place.name}</h2>
+<img src={place.pictures[0].path} alt="anchorplace" />
 <div>avg depth: {place.avgDepth}</div>
 <div>notes: {place.notes}</div>
 </div>

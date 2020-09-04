@@ -33,7 +33,7 @@
       const performGoto = async (form) => {
 
         await goto('/');
-        fetch('place', {method: 'POST', body: formData});
+        fetch('place/0/', {method: 'POST', body: formData});
       }
 
       performGoto(form);
