@@ -1,72 +1,74 @@
 <script>
 	import { stores } from '@sapper/app';
+
+	import Menu from './Menu.svelte';
+
 	export let segment;
 
-    const { preloading, page, session } = stores();
+	let showMenu = false;
+
+	//console.log(segment);
+
+	const { preloading, page, session } = stores();
+
 </script>
 
 <style>
-	nav {
+
+	.navbar {
 		border-bottom: 1px solid rgba(255,62,0,0.1);
 		font-weight: 300;
-		padding: 0 1em;
+		padding: 1em 1em;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
 	}
 
-	ul {
-		margin: 0;
-		padding: 0;
-	}
-
-	/* clearfix */
-	ul::after {
-		content: '';
-		display: block;
-		clear: both;
-	}
-
-	li {
-		display: block;
-		float: left;
-	}
-
-	[aria-current] {
-		position: relative;
-		display: inline-block;
-	}
-
-	[aria-current]::after {
-		position: absolute;
-		content: '';
-		width: calc(100% - 1em);
-		height: 2px;
-		background-color: rgb(255,62,0);
-		display: block;
-		bottom: -1px;
-	}
+	/* .nav-group {
+		
+	} */
 
 	a {
 		text-decoration: none;
-		padding: 1em 0.5em;
-		display: block;
 	}
+
+	.nav-item {
+		cursor: pointer;
+	}
+
+	.nav-item:hover {
+		color: #ff9100;
+	}
+
+	.current {
+        color: #ff9100;
+    }
 </style>
 
-<nav>
-	<ul>
-		<li><a rel=prefetch aria-current="{segment === undefined ? 'page' : undefined}" href=".">home</a></li>
+<div class="navbar">
+	<div class="nav-group">
+		<div class="nav-item material-icons" on:click={() => showMenu = true} >menu</div>
 
-		<li><a aria-current="{segment === 'map' ? 'page' : undefined}" href="map">map</a></li>
+	</div>
 
-		<li><a aria-current="{segment === 'about' ? 'page' : undefined}" href="about">about</a></li>
+	<div class="nav-group">Anchorplace</div>
 
-		{#if $session.id} 
-			<li><a aria-current="{segment === 'add' ? 'page' : undefined}" href="add">add</a></li>
+	<div class="nav-group">
+		<div class="nav-item material-icons">gps_not_fixed</div>
+
+		{#if $session.id}
+		<a href="add" class="nav-item material-icons" class:current="{segment === 'add'}">
+            add_location
+        </a>
 		{/if}
 
-		<!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
-		     the blog data when we hover over the link or tap it on a touchscreen -->
-		<li><a rel=prefetch aria-current="{segment === 'blog' ? 'page' : undefined}" href="blog">blog</a></li>
+		<a href="account" class="nav-item material-icons" class:current="{segment === 'account'}">
+            account_box
+        </a>
+	</div>
+</div>
 
-		<li><a aria-current="{segment === 'account' ? 'page' : undefined}" href="account">account</a></li>
-	</ul>
-</nav>
+
+{#if showMenu}
+	<Menu on:close="{() => showMenu = false }" {segment}></Menu>
+{/if}
