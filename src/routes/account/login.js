@@ -28,6 +28,7 @@ export async function post(req, res, next) {
                  { $set: { 'sessionid': newSessionId } });
 
                  session.id = newSessionId;
+                 session.userid = user[0]._id;
 
                  res.statusCode = 200;
                  

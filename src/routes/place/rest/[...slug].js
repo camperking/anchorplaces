@@ -1,8 +1,8 @@
-import { db } from '../../server.js';
+import { db } from '../../../server.js';
 import formidable from 'formidable';
 import Jimp from 'jimp';
 import { ObjectID } from 'mongodb';
-import authenticate from '../account/_auth.js';
+import authenticate from '../../account/_auth.js';
 
 const uploadDir = './static/pics/';
 const webPicDir = './pics/';
@@ -21,14 +21,14 @@ export async function get(req, res, next) {
 
     switch (method) {
         case 'id':
-
+            
             try {
-
+                
                 const _id = new ObjectID(location);
 
-                const docs = await places.find({ '_id': _id }).toArray();
-
-                res.end(JSON.stringify(docs));
+                const doc = await places.findOne({ '_id': _id });
+                
+                res.end(JSON.stringify(doc));
 
             } catch (err) {
 
@@ -56,7 +56,7 @@ export async function get(req, res, next) {
 
         break;
         default:
-            res.end('bad method');
+            next();
     }
 
 }
@@ -149,24 +149,24 @@ async function parseForm (req) {
 
     const fields = parsedForm.fields;
     const files = parsedForm.files;
-
+    
     let pictures = [];
 
-    if (files.pictures.path) {      // only one picture uploaded
+    if (files.pictures.size > 0) {      // only one picture uploaded
         
         let {path, name, size, type} = files.pictures;
-            
+        
         path = await convertPics(path);
             
         pictures.push({ path, name, size, type });
             
-    } else {    // more pics uploaded
+    } else if (files.pictures.length) {    // more pics uploaded
         
             let newPic;
             newPic = files.pictures.map( async (val, index) => {
 
                 let {path, name, size, type} = files.pictures[index];
-            
+                
                 path = await convertPics(path);
             
                 return { path, name, size, type };
@@ -183,7 +183,7 @@ async function parseForm (req) {
             'coordinates': [fields.longitude, fields.latitude]
         },
         'pictures': pictures,
-        'avgDepth': fields.avgDepth,
+        'dDepth': fields.depth,
         'notes': fields.notes
     };
 

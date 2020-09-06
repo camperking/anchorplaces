@@ -1,7 +1,7 @@
 <script context="module">
 
 export async function preload() {
-	const res = await this.fetch('/place/rnd/0/14');
+	const res = await this.fetch('/place/rest/rnd/0/14');
 	const places = await res.json();
 	return { places };
 }
