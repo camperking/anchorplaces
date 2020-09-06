@@ -8,15 +8,15 @@ export async function get (req, res) {
     res.statusCode = 200;
     res.end();
     
-    const [ objectid ] = req.params.slug;
+    const [ objectid, key ] = req.params.slug;
 
     const user = await authenticate(req.session.id);
 
-    let object = new ObjectID(objectid);
-
     if (user) {
 
-        const voted = await hasVoted(user, object);
+        let object = new ObjectID(objectid);
+
+        const voted = await hasVoted(user, object, key);
 
         if (voted.vote < 1 || !voted) {
 
@@ -24,11 +24,12 @@ export async function get (req, res) {
 
             const vote = {
                 object,
+                key,
                 userid: user._id,
                 vote: 1
             }
 
-            await votes.replaceOne({ object, userid: user._id }, vote, { upsert: true });
+            await votes.replaceOne({ object, key, userid: user._id }, vote, { upsert: true });
 
         }
 

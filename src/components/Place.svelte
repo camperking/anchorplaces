@@ -29,12 +29,9 @@
 </script>
 
 <style>
-.place, img {
-    width: 100%;
-}
 
 a {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 .head {
@@ -49,8 +46,21 @@ h2 {
     
 }
 
-.title {
-    
+.pictures {
+    display: flex;
+    flex-wrap: wrap;    
+}
+
+.pic {
+    /* width: 50%; */
+    /* display: flex; */
+    box-sizing: border-box;
+    flex-basis: 50%;
+    padding: 0 0.5em 0 0.5em;
+}
+
+img{
+  max-width: 100%;
 }
 
 </style>
@@ -69,12 +79,15 @@ h2 {
 
             </div>
         </div>
-        <Vote {object}></Vote>
+        <Vote object={object} key={null}></Vote>
     </div>
 
     <div class="pictures">
-        {#each pictures as { path }}
-            <img src={path} alt="anchorplace" />
+        {#each pictures as pic}
+            <div class="pic">
+                <img src={pic.path} alt={pic.name} />
+                <Vote object={object} key={pic.path}></Vote>
+            </div>
         {/each}
     </div>
 

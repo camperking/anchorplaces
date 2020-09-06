@@ -6,12 +6,17 @@
     const { preloading, page, session } = stores();
 
     export let object;
+    export let key;
+
+    if (typeof key === 'string') key = key.replace(/\.*\/*/g, '');
+
+    const url = object + '/' + key;
 
     let sum = 0;
     let hasVoted = false;
 
     onMount(() => {
-		fetch('/vote/' + object)
+		fetch('/vote/' + url )
             .then(response => response.json())
             .then(data => {
                 sum = data.sum;
@@ -23,27 +28,23 @@
 
 function voteUp () {
 
-    console.log('voteUp');
-
     if ($session.id) {
         
         if (!hasVoted || (hasVoted < 1)) {
-            console.log(hasVoted);
 
             if (hasVoted === -1) sum = sum + 1;
 
             hasVoted = 1;
             sum = sum + 1;
 
-            fetch('/vote/up/' + object);
+            fetch('/vote/up/' + url);
 
         } else {
 
-            console.log('delete upvote');
-            // hasVoted = false;
-            // sum = sum - 1;
-            //
-            // fetch('/vote/del/' + object);
+            hasVoted = false;
+            sum = sum - 1;
+            
+            fetch('/vote/del/' + url);
 
         }
 
@@ -52,8 +53,6 @@ function voteUp () {
 }
 
 function voteDown () {
-
-    console.log('voteDown');
 
     if ($session.id) {
 
@@ -64,15 +63,14 @@ function voteDown () {
             hasVoted = -1;
             sum = sum - 1;
 
-            fetch('/vote/down/' + object);
+            fetch('/vote/down/' + url);
 
         } else {
 
-            console.log('delete downvote');
-            // hasVoted = false;
-            // sum = sum + 1;
-            //
-            // fetch('/vote/del/' + object);
+            hasVoted = false;
+            sum = sum + 1;
+            
+            fetch('/vote/del/' + url);
 
         }
 
@@ -89,6 +87,7 @@ function voteDown () {
 
     vote {
         display: flex;
+        align-items: center;
     }
 
     .voted {
@@ -101,6 +100,11 @@ function voteDown () {
 
     .vote:hover {
         color: #ff9100;
+    }
+
+    .sum {
+        font-weight: 600;
+        margin: 0 0.5em 0 0.5em;
     }
 </style>
 

@@ -5,7 +5,7 @@ import hasVoted from './_hasVoted.js';
 
 export async function get(req, res) {
 
-    const [ objectid ] = req.params.slug;
+    const [ objectid, key ] = req.params.slug;
 
     const user = await authenticate(req.session.id);
 
@@ -13,7 +13,7 @@ export async function get(req, res) {
 
     const votesdb = db.collection('votes');
 
-    const votes = await votesdb.find({ object }).toArray();
+    const votes = await votesdb.find({ object, key }).toArray();
 
     let doc = {
         sum: 0,
@@ -30,7 +30,7 @@ export async function get(req, res) {
 
     if (user) {
 
-        const voted = await hasVoted(user, object);
+        const voted = await hasVoted(user, object, key);
 
         if (voted) doc.hasVoted = voted.vote;
 

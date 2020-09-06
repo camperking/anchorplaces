@@ -1,11 +1,11 @@
 import { db } from '../../server.js';
 
 
-export default async function hasVoted (user, object) {
+export default async function hasVoted (user, object, key) {
 
     const votes = db.collection('votes');
 
-    const vote = await votes.findOne({ object, userid: user._id });
+    const vote = await votes.findOne({ object, key, userid: user._id });
 
     if (vote != null) {
 
