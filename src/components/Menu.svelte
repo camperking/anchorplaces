@@ -7,8 +7,6 @@
 
     export let segment;
 
-    console.log(segment);
-
 </script>
     
 <style>

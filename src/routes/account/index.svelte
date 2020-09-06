@@ -25,6 +25,7 @@ function login() {
             .then(response => response.json())
             .then(data => {
                 $session.id = data.id;      // put sessioin id in sapper store
+                $session.userid = data.userid;
             })
             .then(goto('/account/'))
             .catch(err => console.log(err));

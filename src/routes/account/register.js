@@ -22,9 +22,11 @@ export async function post(req, res, next) {
 
             session.id = sessionid;  // set session cookies
 
-            await users.insertOne({username, 'password': getHash(password), sessionid});
-
-            res.end(JSON.stringify({id: sessionid}));
+            const result = await users.insertOne({username, 'password': getHash(password), sessionid});
+            //console.log(result.ops[0]._id);
+            const userid = result.ops[0]._id;
+            console.log(userid);
+            res.end(JSON.stringify({id: sessionid, userid }));
 
         }
 

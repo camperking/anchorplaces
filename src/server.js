@@ -28,7 +28,8 @@ app.use(
 	sirv('static', { dev }),
 	sapper.middleware({		// populate sapper store
 			session: (req, res) => ({
-			id: req.session.id
+			id: req.session.id,
+			userid: req.session.userid
 		})
 	})
 	//sapper.middleware()

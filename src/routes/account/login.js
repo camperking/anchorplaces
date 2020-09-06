@@ -22,7 +22,7 @@ export async function post(req, res, next) {
         if (user.length >= 1 && getHash(password) === user[0].password) {    //login successful
 
             let newSessionId = getHash(username + Math.random());
-
+            
             // update session id
             await users.updateOne({ 'username': username },
                  { $set: { 'sessionid': newSessionId } });
@@ -32,8 +32,8 @@ export async function post(req, res, next) {
                  res.statusCode = 200;
                  
         }
-
-        res.end(JSON.stringify({id: session.id}));
+        
+        res.end(JSON.stringify({id: session.id, userid: user[0]._id}));
         
     }
 

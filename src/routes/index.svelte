@@ -10,14 +10,14 @@ export async function preload() {
 <script>
 	import { stores } from '@sapper/app';
 	import { onMount } from 'svelte';
-	import Anchorplace from '../components/Anchorplace.svelte';
+	import Place from '../components/Place.svelte';
 
 	const { preloading, page, session } = stores();
 
 	export let places;
 
 	onMount(() => {
-		console.log($session.id);
+		//console.log($session.id);
 		
  	 });
 </script>
@@ -68,7 +68,7 @@ export async function preload() {
 </figure> -->
 
 {#each places as place}
-<Anchorplace place={place} />
+<Place place={place} />
 {/each}
 
 <p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>

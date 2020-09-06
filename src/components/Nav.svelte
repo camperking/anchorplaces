@@ -1,15 +1,12 @@
 <script>
 	import { stores } from '@sapper/app';
-
 	import Menu from './Menu.svelte';
+
+	const { preloading, page, session } = stores();
 
 	export let segment;
 
 	let showMenu = false;
-
-	//console.log(segment);
-
-	const { preloading, page, session } = stores();
 
 </script>
 
@@ -18,10 +15,11 @@
 	.navbar {
 		border-bottom: 1px solid rgba(255,62,0,0.1);
 		font-weight: 300;
-		padding: 1em 1em;
+		padding: 0 1em 0 1em;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		align-items: center;
 	}
 
 	/* .nav-group {
@@ -34,14 +32,17 @@
 
 	.nav-item {
 		cursor: pointer;
+		padding: 0.5em 0 0.5em 0;
 	}
 
 	.nav-item:hover {
 		color: #ff9100;
+		box-shadow: inset 0px -3px 0px 0px #ff9100;
 	}
 
 	.current {
-        color: #ff9100;
+		color: #ff9100;
+		box-shadow: inset 0px -3px 0px 0px #ff9100;
     }
 </style>
 

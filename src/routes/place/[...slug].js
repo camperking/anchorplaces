@@ -72,7 +72,12 @@ export async function post(req, res, next) {
         res.statusCode = 200;
         res.end();
 
-        const doc = await parseForm(req, user);
+        // parse document
+        const doc = await parseForm(req);
+
+        // set author of the document
+        doc.author = user.username;
+        doc.author_id = user._id;
 
         const places = db.collection('places');
 
@@ -94,7 +99,7 @@ export async function update (req, res, next) {
         res.statusCode = 200;
         res.end();
 
-        const doc = await parseForm(req, user);
+        const doc = await parseForm(req);
 
         const places = db.collection('places');
 
@@ -130,60 +135,61 @@ export async function del (req, res, next) {
 
 }
 
-async function parseForm (req, user) {
+async function parseForm (req) {
 
     const form = formidable({multiples: true, uploadDir: uploadDir, keepExtensions: true});
 
-    let doc = await new Promise(function (resolve, reject) {
-
-        form.parse(req, async (err, fields, files) => {
+    let parsedForm = await new Promise(function (resolve, reject) {
+        form.parse(req, (err, fields, files) => {
             if (err) reject(err);
-            
-            let pictures = [];
-    
-            if (files.pictures.path) {      // only one picture uploaded
-    
-                let {path, name, size, type} = files.pictures;
-    
-                path = await convertPics(path);
-    
-                pictures.push({ path, name, size, type });
-    
-            } else {    // more pics uploaded
-                await files.pictures.map( async (val, index) => {
-    
-                    let {path, name, size, type} = files.pictures[index];
-    
-                    path = await convertPics(path);
-    
-                    pictures.push({ path, name, size, type });
-    
-                });
-            }
-    
-            const doc = {     // const ?
-                'author': user.username, // get user from db via sessionid
-                'author_id': user._id,
-                'name': fields.name,
-                'location': {
-                    'type': 'Point',
-                    'coordinates': [fields.longitude, fields.latitude]
-                },
-                'pictures': pictures,
-                'avgDepth': fields.avgDepth,
-                'notes': fields.notes
-            };
-    
-            resolve(doc);
-    
-        });
 
-    })
+            resolve({ fields, files });
+        });
+    });
+
+    const fields = parsedForm.fields;
+    const files = parsedForm.files;
+
+    let pictures = [];
+
+    if (files.pictures.path) {      // only one picture uploaded
+        
+        let {path, name, size, type} = files.pictures;
+            
+        path = await convertPics(path);
+            
+        pictures.push({ path, name, size, type });
+            
+    } else {    // more pics uploaded
+        
+            let newPic;
+            newPic = files.pictures.map( async (val, index) => {
+
+                let {path, name, size, type} = files.pictures[index];
+            
+                path = await convertPics(path);
+            
+                return { path, name, size, type };
+            
+            });
+
+            pictures = await Promise.all(newPic);
+    }
+
+    const doc = {
+        'name': fields.name,
+        'location': {
+            'type': 'Point',
+            'coordinates': [fields.longitude, fields.latitude]
+        },
+        'pictures': pictures,
+        'avgDepth': fields.avgDepth,
+        'notes': fields.notes
+    };
 
     return doc;
-
+        
 }
-
 
 async function convertPics (path) {
 

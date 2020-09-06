@@ -71,7 +71,7 @@
 
     <div>
         <label for="pictures">pictures</label>
-        <input type="file" name="pictures" multiple="multiple">
+        <input type="file" name="pictures" multiple="multiple" accept=".jpg, .png, .jpeg">
     </div>
 
     <div>
