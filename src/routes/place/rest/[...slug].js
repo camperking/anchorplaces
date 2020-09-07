@@ -56,7 +56,7 @@ export async function get(req, res, next) {
 
         break;
         default:
-            next();
+            res.end('bad method');
     }
 
 }
@@ -64,7 +64,9 @@ export async function get(req, res, next) {
 
 export async function post(req, res, next) {
 
-    // authentication = get user document
+    const [ placeid ] = req.params.slug;
+
+    // get user document
     user = await authenticate(req.session.id);
 
     if (user) {
@@ -75,38 +77,41 @@ export async function post(req, res, next) {
         // parse document
         const doc = await parseForm(req);
 
-        // set author of the document
-        doc.author = user.username;
-        doc.author_id = user._id;
+        // todo validate inputs
 
         const places = db.collection('places');
 
-        places.insertOne(doc);        
-        
-    } else {
-        res.end('no access');
-    }
+        if (placeid == 0) {    // new place from user
 
-}
+            // set creation date
+            doc.created = new Date();
 
-export async function update (req, res, next) {
+            // set author of the document
+            doc.author = user.username;
+            doc.author_id = user._id;
 
-    // authentication = get user document
-    user = await authenticate(req.session.id);
+            places.insertOne(doc);
 
-    if (user) {
+        } else {    // placeid is something
 
-        res.statusCode = 200;
-        res.end();
+            console.log(placeid);
 
-        const doc = await parseForm(req);
+            // check first if object exists and author is user
+            const _id = new ObjectID(placeid);
 
-        const places = db.collection('places');
+            let place = await places.findOne({_id, author_id: user._id});
 
-        const [ placeId ] = req.params.slug;
+            if (user._id.toString() === place.author_id.toString()) {
 
-        places.updateOne({ _id: placeId }, { $set: doc });        
-        
+                // set edit date
+                doc.edited = new Date;
+
+                places.updateOne({ _id, author_id: user._id }, { $set: doc });
+
+            }
+
+        }
+
     } else {
         res.end('no access');
     }
@@ -152,40 +157,54 @@ async function parseForm (req) {
     
     let pictures = [];
 
-    if (files.pictures.size > 0) {      // only one picture uploaded
-        
-        let {path, name, size, type} = files.pictures;
-        
-        path = await convertPics(path);
+    if (files.pictures !== undefined) {
+        if (files.pictures.size > 0) {      // only one picture uploaded
             
-        pictures.push({ path, name, size, type });
+            let {path, name, size, type} = files.pictures;
             
-    } else if (files.pictures.length) {    // more pics uploaded
-        
-            let newPic;
-            newPic = files.pictures.map( async (val, index) => {
-
-                let {path, name, size, type} = files.pictures[index];
+            path = await convertPics(path);
                 
-                path = await convertPics(path);
+            pictures.push({ path, name, size, type });
+                
+        } else if (files.pictures.length >= 1) {    // more pics uploaded
             
-                return { path, name, size, type };
-            
-            });
+                let newPic;
+                newPic = files.pictures.map( async (val, index) => {
 
-            pictures = await Promise.all(newPic);
+                    let {path, name, size, type} = files.pictures[index];
+                    
+                    path = await convertPics(path);
+                
+                    return { path, name, size, type };
+                
+                });
+
+                pictures = await Promise.all(newPic);
+        }
     }
 
-    const doc = {
-        'name': fields.name,
-        'location': {
-            'type': 'Point',
-            'coordinates': [fields.longitude, fields.latitude]
-        },
-        'pictures': pictures,
-        'dDepth': fields.depth,
-        'notes': fields.notes
-    };
+    const doc = fields;
+
+    const protection = JSON.parse(fields.protection);
+    const services = JSON.parse(fields.services);
+
+    doc.protection = protection;
+    doc.services = services;
+
+    if (pictures.length > 0) {
+        doc.pictures = pictures;
+    } 
+
+    const lat = fields.latitude;
+    const lon = fields.longitude;
+
+    doc.location = {
+        type: 'Point',
+        coordinates: [ lon, lat ]
+    }
+
+    delete doc['latitude'];
+    delete doc['longitude'];
 
     return doc;
         

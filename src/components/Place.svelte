@@ -126,6 +126,16 @@ img{
     background-color: #c0cfff;
 }
 
+.protection {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.direction {
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+}
+
 </style>
 
 <div class="place">
@@ -158,7 +168,7 @@ img{
 
         <div class="info-item">
             <div class="info-key">depth</div>
-            <div class="info-value">{place.avgDepth} m</div>
+            <div class="info-value">{place.depth} m</div>
         </div>
 
         <div class="info-item">
@@ -168,7 +178,15 @@ img{
 
         <div class="info-item">
             <div class="info-key">protection</div>
-            <div class="info-value">{place.protection}</div>
+            <div class="info-value protection">
+
+                {#each Object.entries(place.protection) as direction}
+                    {#if direction[1]}
+                        <div class="direction">{direction[0]}</div>
+                    {/if}
+                {/each}
+
+            </div>
         </div>
 
         <div class="info-notes">
@@ -180,45 +198,15 @@ img{
     {#if moreInfo}
     <div class="info" transition:slide={{}} >
 
-        <div class="info-item">
-            <div class="info-key">services</div>
-            <div class="info-value">{place.services}</div>
-        </div>
-
-        <div class="info-item">
-            <div class="info-key">boat repair</div>
-            <div class="info-value">{place.boatRepair}</div>
-        </div>
-
-        <div class="info-item">
-            <div class="info-key">diesel</div>
-            <div class="info-value">{place.diesel}</div>
-        </div>
-
-        <div class="info-item">
-            <div class="info-key">gas</div>
-            <div class="info-value">{place.gas}</div>
-        </div>
-
-        <div class="info-item">
-            <div class="info-key">engine maint.</div>
-            <div class="info-value">{place.engineMaint}</div>
-        </div>
-
-        <div class="info-item">
-            <div class="info-key">sailmaker</div>
-            <div class="info-value">{place.sailmaker}</div>
-        </div>
-
-        <div class="info-item">
-            <div class="info-key">restaurants</div>
-            <div class="info-value">{place.restaurants}</div>
-        </div>
-
-        <div class="info-item">
-            <div class="info-key">supermarket</div>
-            <div class="info-value">{place.supermarket}</div>
-        </div>
+        {#each Object.entries(place.services) as service}
+            <div class="info-item">
+                <div class="info-key">{service[0]}</div>
+                <div class="info-value">
+                    <div>{#if service[1]}yes{:else}no{/if}</div>
+                    <span class="material-icons">read_more</span>
+                </div>
+            </div>
+        {/each}
 
     </div>
     {/if}

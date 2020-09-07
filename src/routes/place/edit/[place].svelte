@@ -3,12 +3,56 @@
 	export async function preload({ params }) {
 
         let placeid  = params.place;
+
+        const template =    {
+            _id: 0,
+            name: '',
+            notes: '',
+            depth: '',
+            ground: 'sand',
+            location: {
+                type: 'Point',
+                coordinates: [ '0', '0' ]
+            },
+            pictures: [],
+            protection: {
+                'N': false,
+                'NE': false,
+                'E': false,
+                'SE': false,
+                'S': false,
+                'SW': false,
+                'W': false,
+                'NW': false
+            },
+            services: {
+                'diesel': false,
+                'gas': false,
+                'water': false,
+                'boat repair': false,
+                'engine repair': false,
+                'sailmaker': false,
+                'moorings': false,
+                'shower': false,
+                'cafes': false,
+                'restaurants': false,
+                'supermarket': false
+            }
+        };
+
+        if (placeid == 'new') {
+                
+             const place = template;
+             return { place };
+
+         } else {
         
-        const res = await this.fetch('/place/rest/id/' + placeid);
-        
-        const place = await res.json();
-        //console.log(place);
-		return { place };
+            const res = await this.fetch('/place/rest/id/' + placeid);
+           
+            const place = await res.json();
+
+            return { place };
+         }
 	}
 </script>
 
@@ -24,6 +68,13 @@
 
     export let place;
 
+    let edit = true;
+    let add = false;
+    if (place.name === '') {
+        edit = false;
+        add = true;
+    }
+
     const groundValues = [
         'sand',
         'gravel',
@@ -33,47 +84,50 @@
         'plants'
     ];
 
-    let ground = 'sand';
+    let ground = 'mud';
 
-    const protectionValues = [
-        'N',
-        'NE',
-        'E',
-        'SE',
-        'S',
-        'SW',
-        'W',
-        'NW'
-    ];
+    // const protectionValues = [
+    //     'N',
+    //     'NE',
+    //     'E',
+    //     'SE',
+    //     'S',
+    //     'SW',
+    //     'W',
+    //     'NW'
+    // ];
 
-    let protection = {};
+    // let protection = {};
 
-    const serviceValues = [
-        'diesel',
-        'gas',
-        'water',
-        'boat repair',
-        'engine maint.',
-        'sailmaker',
-        'moorings',
-        'shower',
-        'cafes',
-        'restaurants',
-        'supermarket'
-    ];
+    // protectionValues.forEach(direction => {
+    //     protection[direction] = false;
+    // })
 
-    let services = {};
+    // const serviceValues = [
+    //     'diesel',
+    //     'gas',
+    //     'water',
+    //     'boat repair',
+    //     'engine repair',
+    //     'sailmaker',
+    //     'moorings',
+    //     'shower',
+    //     'cafes',
+    //     'restaurants',
+    //     'supermarket'
+    // ];
 
-    //console.log(place);
+    // let services = {};
+
+    // serviceValues.forEach(service => {
+    //     services[service] = false;
+    // })
 
     onMount(() => {
-		console.log(place);
+
+		// console.log(place);
 		
  	 });
-  
-    //let latitude = 0;
-    //let longitude = 0;
-  
   
     function getLocation() {
   
@@ -92,24 +146,25 @@
     }
   
   
-    function add() {
+function addPlace() {
+    
 
-        //console.log(place.location.coordinates[0]);
-        
-  
-    //   if(form.reportValidity()) {
-    //     const formData = new FormData(form);
-  
-    //     const performGoto = async (form) => {
-  
-    //       await goto('/');
-    //       fetch('place/0/', {method: 'POST', body: formData});
-    //     }
-  
-    //     performGoto(form);
-  
-    //   }
+    if(form.reportValidity()) {
+        console.log('valid');
+        const formData = new FormData(form);
+
+        const performGoto = async (form) => {
+
+            await goto('/');
+            fetch('place/rest/' + place._id, {method: 'post', body: formData});
+
+        }
+
+        performGoto(form);
+
     }
+
+}
   
   </script>
   
@@ -121,26 +176,17 @@
       border-bottom: 3px solid #ff9100;
       text-transform: uppercase;
       margin-right: 1em;
-      /* text-align: right; */
-      /* width: 50% */
-      /* grid-column: 1; */
   }
 
   input {
-      /* grid-column: 2; */
-      /* width: 50%; */
+      
   }
 
   .form-item {
     display: flex;
     justify-content: center;
     align-items: center;
-    justify-items: center;
-
-    /* display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: auto; */
-    
+    justify-items: center;   
     margin-bottom: 1em;
   }
 
@@ -208,15 +254,25 @@
   
       <div class="form-item">
             <div class="form-label"><label for="pictures">pictures</label></div>
+
+
+            {#if edit}
             <div class="pictures">
                 {#each place.pictures as pic}
                     <div class="pic">
                         <img src={pic.path} alt={pic.name} />
-                        <!-- <Vote object={object} key={pic.path}></Vote> -->
                     </div>
                 {/each}
             </div>
-            <div class="form-input"></div>
+            {/if}
+
+            {#if add}
+            <input type="file" name="pictures" multiple="multiple" accept=".jpg, .png, .jpeg">
+            {/if}
+            
+
+
+
       </div>
   
       <div class="form-item">
@@ -240,29 +296,31 @@
      <div class="form-item">
         <div class="form-label"><label for="protection">protection</label></div>
         <div class="form-input">
-            {#each protectionValues as direction}
+            {#each Object.entries(place.protection) as direction}
                 <div>
-                    <input type="checkbox" id={direction} name={'protection_' + direction} value={direction} bind:checked={protection[direction]} >
-                    <label for={direction}>{direction}</label>
+                    <input type="checkbox" id={direction[0]} value={direction[1]} bind:checked={place.protection[direction[0]]} />
+                    <label for={direction[0]}>{direction[0]}</label>
                 </div>
             {/each}
         </div>
+        <input type="hidden" name="protection" value={JSON.stringify(place.protection)} />
     </div>
 
     <div class="form-item">
         <div class="form-label"><label for="service">services</label></div>
         <div class="form-input">
-            {#each serviceValues as service}
+            {#each Object.entries(place.services) as service}
                 <div>
-                    <input type="checkbox" id={service} name={'service_' + service} value={service} bind:checked={services[service]} >
-                    <label for={service}>{service}</label>
+                    <input type="checkbox" id={service[0]} value={service[1]} bind:checked={place.services[service[0]]} />
+                    <label for={service[0]}>{service[0]}</label>
                 </div>
             {/each}
         </div>
+        <input type="hidden" name="services" value={JSON.stringify(place.services)} />
     </div>
   
       <div class="form-item">
-          <input on:click={add} type="button" value="Submit" />
+          <input on:click={addPlace} type="button" value="Submit" />
       </div>
   </form>
   

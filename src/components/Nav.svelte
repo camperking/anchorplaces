@@ -62,7 +62,7 @@
 		<div class="nav-item material-icons">gps_not_fixed</div>
 
 		{#if $session.id}
-		<a href="place/edit/" class="nav-item material-icons" class:current="{segment === 'add'}">
+		<a href="place/edit/new" class="nav-item material-icons" class:current="{segment === 'add'}">
             add_location
         </a>
 		{/if}
