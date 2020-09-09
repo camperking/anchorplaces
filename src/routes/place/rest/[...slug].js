@@ -218,7 +218,7 @@ async function convertPics (path) {
     image.write(path + '.web');
 
     let filename = path.split('\\');
-    const webPath = webPicDir + filename[1];
+    const webPath = webPicDir + filename[1] + '.web';
 
     return webPath;
 
