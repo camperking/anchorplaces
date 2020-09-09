@@ -202,7 +202,13 @@ img{
             <div class="info-item">
                 <div class="info-key">{service[0]}</div>
                 <div class="info-value">
-                    <div>{#if service[1]}yes{:else}no{/if}</div>
+                    <div>
+                        {#if service[1]}
+                            <span class="material-icons">checked</span>
+                        {:else}
+                            <span class="material-icons">clear</span>
+                        {/if}
+                    </div>
                     <span class="material-icons">read_more</span>
                 </div>
             </div>
