@@ -1,17 +1,15 @@
 import { db } from '../../server.js';
 import getHash from '../../hash.js';
+import { registerScheme } from './_validationSchemes.js';
 
-const usernamePattern = /^([A-Za-z0-9€#\.+-]){4,20}$/;
 
 export async function post(req, res, next) {
+    try {
+        let body = await registerScheme.validateAsync(req.body);
+        
+        const { username, password, email } = body;
 
-    // get inputs from parsed json body
-    const users = db.collection('users');
-    const { username, password } = req.body;
-
-    let session = req.session;
-
-    if ((username && password) && usernamePattern.test(req.body.username)) {
+        const users = db.collection('users');
 
         const user = await users.find({ 'username': username }).toArray();
 
@@ -20,16 +18,36 @@ export async function post(req, res, next) {
 
             let sessionid = getHash(username + Math.random());
 
-            session.id = sessionid;  // set session cookies
+            req.session.id = sessionid;  // set session cookies
 
-            const result = await users.insertOne({username, 'password': getHash(password), sessionid});
-            //console.log(result.ops[0]._id);
+            body.sessionid = sessionid; // set database sessionid
+
+            body.password = getHash(password);  // hash password
+
+            body.registered = new Date();
+
+
+            const result = await users.insertOne(body);
+            
             const userid = result.ops[0]._id;
-            console.log(userid);
-            res.end(JSON.stringify({id: sessionid, userid }));
 
+            req.session.userid = userid;
+            
+            res.end(JSON.stringify({sessionid, userid }));
+
+        } else {         
+            throw 'User exists';
         }
 
-    }
 
+    } catch (err) {
+        
+        let errMsg = {error: err};  // send as response
+
+        if (err.details) {      // if joi validation error get error message
+            errMsg.error = err.details[0].message;
+        }
+
+        res.end(JSON.stringify(errMsg));
+    }
 }

@@ -17,6 +17,7 @@
     "cookie-session": "^1.4.0",
     "formidable": "^1.2.2",
     "jimp": "^0.16.1",
+    "joi": "^17.2.1",
     "leaflet": "^1.7.1",
     "mongodb": "^3.6.2",
     "polka": "next",
