@@ -2,6 +2,7 @@
     import { stores } from '@sapper/app';
     import { slide } from 'svelte/transition';
     import Vote from './Vote.svelte';
+    import Pic from './Pic.svelte';
 
     const { preloading, page, session } = stores();
 
@@ -69,9 +70,9 @@ h2 {
     /* padding: 0 0.5em 0 0.5em; */
 }
 
-img{
+/* img{
   max-width: 100%;
-}
+} */
 
 .info {
     display: flex;
@@ -158,7 +159,8 @@ img{
     <div class="pictures">
         {#each pictures as pic}
             <div class="pic">
-                <img src={pic.path} alt={pic.name} />
+                <!-- <img src={pic.path} alt={pic.name} /> -->
+                <Pic {pic}></Pic>
                 <Vote object={object} key={pic.path}></Vote>
             </div>
         {/each}

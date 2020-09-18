@@ -34,6 +34,4 @@ export const loginScheme = Joi.object({
         .required()
 });
 
-export const authScheme = Joi.object({
-    sessionid: Joi.string().required()
-});
+

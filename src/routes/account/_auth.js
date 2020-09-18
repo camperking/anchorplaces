@@ -1,11 +1,9 @@
 import { db } from '../../server.js';
-import { authScheme } from './_validationSchemes.js';
 
 
 export default async function authenticate (sessionid) {
-    if (sessionid) {
-        try { 
-            const authId = authScheme.validateAsync({sessionid});
+
+    if ( typeof sessionid === 'string' ) {
 
             const users = db.collection('users');
 
@@ -16,10 +14,6 @@ export default async function authenticate (sessionid) {
             } else {
                 return user;
             }
-
-        } catch (err) {
-            return false;
-        }
 
     }
 

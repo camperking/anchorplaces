@@ -26,10 +26,6 @@
 		align-items: center;
 	}
 
-	/* .nav-group {
-		
-	} */
-
 	a {
 		text-decoration: none;
 	}
@@ -56,7 +52,7 @@
 
 	</div>
 
-	<div class="nav-group">Anchorplace</div>
+	<div class="nav-group">Anchorplaces</div>
 
 	<div class="nav-group">
 		<div class="nav-item material-icons">gps_not_fixed</div>
