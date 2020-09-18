@@ -33,3 +33,7 @@ export const loginScheme = Joi.object({
         .max(24)
         .required()
 });
+
+export const authScheme = Joi.object({
+    sessionid: Joi.string().required()
+});

@@ -86,43 +86,6 @@
 
     let ground = 'mud';
 
-    // const protectionValues = [
-    //     'N',
-    //     'NE',
-    //     'E',
-    //     'SE',
-    //     'S',
-    //     'SW',
-    //     'W',
-    //     'NW'
-    // ];
-
-    // let protection = {};
-
-    // protectionValues.forEach(direction => {
-    //     protection[direction] = false;
-    // })
-
-    // const serviceValues = [
-    //     'diesel',
-    //     'gas',
-    //     'water',
-    //     'boat repair',
-    //     'engine repair',
-    //     'sailmaker',
-    //     'moorings',
-    //     'shower',
-    //     'cafes',
-    //     'restaurants',
-    //     'supermarket'
-    // ];
-
-    // let services = {};
-
-    // serviceValues.forEach(service => {
-    //     services[service] = false;
-    // })
-
     onMount(() => {
 
 		// console.log(place);
@@ -178,9 +141,9 @@ function addPlace() {
       margin-right: 1em;
   }
 
-  input {
+  /* input {
       
-  }
+  } */
 
   .form-item {
     display: flex;
@@ -200,10 +163,10 @@ function addPlace() {
       text-align: left;
   }
 
-  form {
-      /* display: flex; */
-      /* flex-wrap: wrap; */
-  }
+  /* form {
+      display: flex;
+      flex-wrap: wrap;
+  } */
 
   .pictures {
     display: flex;

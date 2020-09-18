@@ -1,18 +1,26 @@
 import { db } from '../../server.js';
+import { authScheme } from './_validationSchemes.js';
 
 
 export default async function authenticate (sessionid) {
+    if (sessionid) {
+        try { 
+            const authId = authScheme.validateAsync({sessionid});
 
-    const users = db.collection('users');
+            const users = db.collection('users');
 
-    const docs = await users.find({sessionid}).toArray();
+            const user = await users.findOne({sessionid});
 
-    if ( docs.length === 1 ) { 
-        // console.log(docs[0]._id);
-        return docs[0];
-    } else {
-        return false;
+            if (user === null) { 
+                return false;
+            } else {
+                return user;
+            }
+
+        } catch (err) {
+            return false;
+        }
+
     }
-
 
 }
