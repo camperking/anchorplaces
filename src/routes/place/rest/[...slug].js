@@ -1,4 +1,4 @@
-import { db } from '../../../server.js';
+import { db } from '../../../db.js';
 import formidable from 'formidable';
 import Jimp from 'jimp';
 import { ObjectID } from 'mongodb';

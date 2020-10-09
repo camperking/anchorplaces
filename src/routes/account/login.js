@@ -1,4 +1,4 @@
-import { db } from '../../server.js';
+import { db } from '../../db.js';
 import getHash from '../../hash.js';
 import { loginScheme } from './_validationSchemes.js';
 
@@ -6,7 +6,6 @@ import { loginScheme } from './_validationSchemes.js';
 export async function post(req, res, next) {
 
     try {
-
         let body = await loginScheme.validateAsync(req.body);
 
         const { username, password } = body;

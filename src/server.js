@@ -4,46 +4,37 @@ import compression from 'compression';
 import * as sapper from '@sapper/server';
 import bodyParser from 'body-parser';
 import cookieSession from 'cookie-session';
-import { MongoClient } from 'mongodb';
-const url = 'mongodb://node:arsch123@localhost:27017/test';
 
-
-const app = polka();
-
-const dbname = 'test';
-const dbClient = new MongoClient(url, {useUnifiedTopology: true});
-export var db;
+import dbInit from './db.js';
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 
-app
-	.use(cookieSession({ keys: ['key'] }))
-	//.use(bodyParser.urlencoded({ extended: false }))
-	.use(bodyParser.json());
-	//.use(authenticate);
+console.log('connecting to mongodb');
 
-app.use(
-	compression({ threshold: 0 }),
-	sirv('static', { dev }),
-	sapper.middleware({		// populate sapper store
+dbInit().then(() => {
+
+	console.log('connected to mongodb');
+
+	polka() // You can also use Express
+	.use(
+		cookieSession({ keys: ['key'] }),
+		bodyParser.json(),
+		compression({ threshold: 0 }),
+		sirv('static', { dev }),
+		sapper.middleware({		// populate sapper store
 			session: (req, res) => ({
-			id: req.session.id,
-			userid: req.session.userid
+				id: req.session.id,
+				userid: req.session.userid
+			})
 		})
-	})
-	//sapper.middleware()
-);
+	)
+	.listen(PORT, err => {
+		if (err) console.log('error', err);
+	});
 
-dbClient.connect((err) => {
-	if (err) {
-		console.log("no db connection");
-	} else {
-		// export database object
-		db = dbClient.db(dbname);
-
-		app.listen(PORT, err => {
-			if (err) console.log('error', err);
-		})
-	}
+}).catch(err => {
+	console.log(err);
 })
+
+

@@ -1,10 +1,11 @@
-import { db } from '../../server.js';
+import { db } from '../../db.js';
 import getHash from '../../hash.js';
 import { registerScheme } from './_validationSchemes.js';
 
 
 export async function post(req, res, next) {
     try {
+        console.log(req.body);
         let body = await registerScheme.validateAsync(req.body);
         
         const { username, password, email } = body;

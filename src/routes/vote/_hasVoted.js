@@ -1,4 +1,4 @@
-import { db } from '../../server.js';
+import { db } from '../../db.js';
 
 
 export default async function hasVoted (user, object, key) {

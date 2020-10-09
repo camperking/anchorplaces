@@ -1,4 +1,4 @@
-import { db } from '../../../server.js';
+import { db } from '../../../db.js';
 import { ObjectID } from 'mongodb';
 import authenticate from '../../account/_auth.js';
 import hasVoted from '../_hasVoted.js';
