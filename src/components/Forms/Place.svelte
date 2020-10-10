@@ -1,11 +1,12 @@
 <script>
     import Button from '../ui/Button.svelte';
-import Form from '../ui/Form.svelte';
-import TextInput from '../ui/TextInput.svelte';
+    import Form from '../ui/Form.svelte';
+    import TextInput from '../ui/TextInput.svelte';
+    import GeoInput from '../ui/GeoInput.svelte';
 
-let errorMsg = {};
+    let errorMsg = {};
 
-let name = '';
+    let name = '';
 
 </script>
 
@@ -14,7 +15,8 @@ let name = '';
 </style>
 
 <Form>
-    <TextInput label="Name" bind:value={name} message={'the name of the anchorpalce'} errorMsg={errorMsg.name} />
+    <TextInput label="Name" bind:value={name} message={'the name of the anchorplace'} errorMsg={errorMsg.name} />
+    <GeoInput></GeoInput>
 
-    <Button></Button>
+    <Button>Submit</Button>
 </Form>
