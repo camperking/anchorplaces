@@ -11,6 +11,9 @@ export async function preload() {
 	import { stores } from '@sapper/app';
 	import { onMount } from 'svelte';
 	import Place from '../components/Place.svelte';
+	import Menu from '../components/ui/Menu/Menu.svelte';
+	import MenuItem from '../components/ui/Menu/MenuItem.svelte';
+	import Button from '../components/ui/Button.svelte';
 
 	const { preloading, page, session } = stores();
 
@@ -23,49 +26,32 @@ export async function preload() {
 </script>
 
 <style>
-	/* h1, figure, p {
-		text-align: center;
-		margin: 0 auto;
-	} */
-
-	/* h1 {
-		font-size: 2.8em;
-		text-transform: uppercase;
-		font-weight: 700;
-		margin: 0 0 0.5em 0;
-	} */
-
-	/* figure {
-		margin: 0 0 1em 0;
-	} */
-
-	/* img {
-		width: 100%;
-		max-width: 400px;
-		margin: 0 0 1em 0;
-	} */
 
 	p {
 		margin: 1em auto;
 	}
 
-	/* @media (min-width: 480px) {
-		h1 {
-			font-size: 4em;
-		}
-	} */
 </style>
 
 <svelte:head>
 	<title>Anchorplace Map</title>
 </svelte:head>
 
-<!-- <h1>Great success!</h1>
 
-<figure>
-	<img alt='Success Kid' src='successkid.jpg'>
-	<figcaption>Have fun with Sapper!</figcaption>
-</figure> -->
+<Menu>
+	<div slot="menu-activator">
+		<Button weight="secondary" border={false} >
+        	<span class="material-icons">account_box</span>
+    	</Button>
+	</div>
+	<div slot="menu-list">
+		<MenuItem onClick={() => alert('asd')}>asdasd</MenuItem>
+		<MenuItem>hjlkgjljkl</MenuItem>
+		<MenuItem>assd</MenuItem>
+		<MenuItem>1234sdf</MenuItem>
+		<MenuItem>asdasdsdffs</MenuItem>
+	</div>
+</Menu>
 
 {#each places as place}
 <Place place={place} />

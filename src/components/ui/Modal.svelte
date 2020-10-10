@@ -1,9 +1,14 @@
 <script>
 
-    import { createEventDispatcher, onDestroy } from 'svelte';
+    import { createEventDispatcher } from 'svelte';
     
     const dispatch = createEventDispatcher();
-    const close = () => dispatch('close');
+    const close = () => {
+        visible = false;
+        dispatch('close');
+    }
+
+    export let visible = false;
     
     </script>
     <style>
@@ -23,20 +28,17 @@
     }
     
     .modal {
-        /* text-align: center; */
         background-color: white;
-        /* margin-left: auto;
-        margin-right: auto; */
-        margin-top: 4em;
         padding: 2em;
         
     }
     
     </style>
     
+    {#if visible}
     <div class="modal-background" on:click={close} >
         <div class="modal" on:click|stopPropagation>
             <slot></slot>
-            <!-- <div><input type="button" on:click={close} value="ok" /></div> -->
         </div>
     </div>
+    {/if}

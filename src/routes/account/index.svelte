@@ -6,7 +6,7 @@
     import Button from '../../components/ui/Button.svelte';
     import Modal from '../../components/ui/Modal.svelte';
 
-    const { preloading, page, session } = stores();
+    const { session } = stores();
     
     let showLogin = false;
 
@@ -26,9 +26,9 @@
 {#if !$session.id}
 
     <Button onClick={() => showLogin = true}>Login</Button>
-    {#if showLogin}
-        <Modal on:close={() => showLogin = false}><Login></Login></Modal>
-    {/if}
+    
+    <Modal on:close={() => showLogin = false} visible={showLogin}><Login></Login></Modal>
+    
 
     <Login></Login>
 

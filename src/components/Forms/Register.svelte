@@ -1,6 +1,8 @@
 <script>
     import { stores } from '@sapper/app';
     import { goto } from '@sapper/app';
+    import { createEventDispatcher } from 'svelte';
+
     import { registerScheme } from '../../validationSchemes.js';
 
     import Error from '../ui/Error.svelte';
@@ -9,6 +11,8 @@
     import Button from '../ui/Button.svelte';
 
     const { session } = stores();
+
+    const dispatch = createEventDispatcher();
     
     export let redirect = '/';
 
@@ -20,6 +24,8 @@
     let errorMsg = {};
 
 async function register() {
+
+    dispatch('submit');
 
     const headers = {'Content-Type': 'application/json'};
     

@@ -1,12 +1,18 @@
 <script>
 	import { stores } from '@sapper/app';
-	import Menu from './Menu.svelte';
+	import Button from './ui/Button.svelte';
+	import Menu from './ui/Menu/Menu.svelte';
+	import MenuItem from './ui/Menu/MenuItem.svelte';
+	import Modal from './ui/Modal.svelte';
+	import Login from './Forms/Login.svelte';
+	import Register from './Forms/Register.svelte';
 
-	const { preloading, page, session } = stores();
+	const { session } = stores();
 
 	export let segment;
 
-	let showMenu = false;
+	let showLogin = false;
+	let showRegister = false;
 
 </script>
 
@@ -44,11 +50,12 @@
 		color: #ff9100;
 		box-shadow: inset 0px -3px 0px 0px #ff9100;
     }
+
 </style>
 
 <div class="navbar">
 	<div class="nav-group">
-		<div class="nav-item material-icons" on:click={() => showMenu = true} >menu</div>
+		<div class="nav-item material-icons" >menu</div>
 
 	</div>
 
@@ -62,14 +69,50 @@
             add_location
         </a>
 		{/if}
+		
+		{#if $session.id}
+			<Menu>
+				<div slot="menu-activator">
+					<span class="nav-item material-icons">account_box</span>
+				</div>
+				<div slot="menu-list">
+					<MenuItem>
+						<a href="profile">
+							<b>Your Profile</b>
+						</a>
+					</MenuItem>
+					<MenuItem>Likes</MenuItem>
+					<MenuItem>Follower</MenuItem>
+					<MenuItem>Votes</MenuItem>
+					<MenuItem>Comments</MenuItem>
+				</div>
+			</Menu>
+		{:else}
+		<Menu>
+			<div slot="menu-activator">
+				<span class="nav-item material-icons">account_box</span>
+			</div>
+			<div slot="menu-list">
+				<MenuItem>
+					<Button onClick={() => showLogin = true}>Login</Button>
+					
+					<Button weight="secondary" onClick={() => showRegister = true}>Sign Up</Button>
+				</MenuItem>
+			</div>
+		</Menu>
+		{/if}
 
-		<a href="account" class="nav-item material-icons" class:current="{segment === 'account'}">
-            account_box
-        </a>
+		<Modal bind:visible={showLogin}>
+			<Login on:submit={() => showLogin = false} redirect="profile"></Login>
+		</Modal>
+
+		<Modal bind:visible={showRegister}>
+			<Register on:submit={() => showRegister = false} redirect="profile"></Register>
+		</Modal>
 	</div>
 </div>
 
 
-{#if showMenu}
+<!-- {#if showMenu}
 	<Menu on:close="{() => showMenu = false }" {segment}></Menu>
-{/if}
+{/if} -->
