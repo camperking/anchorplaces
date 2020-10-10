@@ -1,13 +1,15 @@
 <script>
     import { stores } from '@sapper/app';
     import { goto } from '@sapper/app';
-    import Error from '../../components/ui/Error.svelte';
     import Login from '../../components/Forms/Login.svelte';
     import Register from '../../components/Forms/Register.svelte';
+    import Button from '../../components/ui/Button.svelte';
+    import Modal from '../../components/ui/Modal.svelte';
 
-	const { preloading, page, session } = stores();
+    const { preloading, page, session } = stores();
+    
+    let showLogin = false;
 
-    let error = false;
 
     function logout () {
         $session.id = false;
@@ -23,16 +25,16 @@
 
 {#if !$session.id}
 
-<Login></Login>
+    <Button onClick={() => showLogin = true}>Login</Button>
+    {#if showLogin}
+        <Modal on:close={() => showLogin = false}><Login></Login></Modal>
+    {/if}
 
-<Register></Register>
+    <Login></Login>
 
-{:else}
-    <div class="form-item">
-        <input on:click={logout} type="button" value="logout"/>
-    </div>
+    <Register></Register>
+
+{:else} 
+    <input on:click={logout} type="button" value="logout"/> 
 {/if}
 
-{#if error}
-    <Error on:close={() => error = false}>{error}</Error>
-{/if}

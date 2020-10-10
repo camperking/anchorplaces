@@ -1,12 +1,13 @@
 import { db } from '../../db.js';
 import getHash from '../../hash.js';
-import { loginScheme } from './_validationSchemes.js';
+import { loginScheme } from '../../validationSchemes.js';
 
 
 export async function post(req, res, next) {
 
     try {
-        let body = await loginScheme.validateAsync(req.body);
+
+        const body = await loginScheme.validate(req.body);
 
         const { username, password } = body;
 
@@ -36,8 +37,8 @@ export async function post(req, res, next) {
 
         let errMsg = {error: err};  // send as response
 
-        if (err.details) {      // if joi validation error get error message
-            errMsg.error = err.details[0].message;
+        if (err.message) {      // if yup validation error get error message
+            errMsg.error = err.message;
         }
 
         res.end(JSON.stringify(errMsg));

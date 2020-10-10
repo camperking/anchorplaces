@@ -1,7 +1,6 @@
 <script>
 
 export {
-    label,
     onClick
 };
 
@@ -11,7 +10,7 @@ let onClick = () => {};
 </script>
 
 <style>
-input {
+button {
     background-color: white;
     border: none;
     border: 1px solid #ff9100;
@@ -24,10 +23,12 @@ input {
 
 }
 
-input:hover {
+button:hover {
     background-color: #ff9100;
     color: white;
 }
 </style>
 
-<input type="button" value={label} on:click={onClick}  />
+<button type="button" on:click={onClick}>
+    <slot />
+</button>

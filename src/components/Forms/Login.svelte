@@ -4,12 +4,13 @@
     import { loginScheme } from '../../validationSchemes.js';
 
     import Error from '../ui/Error.svelte';
+    import Form from '../ui/Form.svelte';
     import TextInput from '../ui/TextInput.svelte';
     import Button from '../ui/Button.svelte';
 
     const { session } = stores();
     
-    export let destination = '/';
+    export let redirect = '/';
 
     let username = '';
     let password = '';
@@ -28,7 +29,7 @@ async function login() {
  
     try {
         const userLogin = await loginScheme.validate(body, { abortEarly: false });
-
+        // todo hash password
         try {
                 const response = await fetch('/account/login', {
                     headers,
@@ -40,7 +41,7 @@ async function login() {
 
                 if (data.sessionid) {
                     $session.id = data.sessionid;
-                    goto(destination);
+                    goto(redirect);
                 } else {
                     error = data.error;
                 }
@@ -57,33 +58,20 @@ async function login() {
 
   }
 
-
-
-
 </script>
 
-<style>
 
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+<style>
 
 </style>
 
 
+<Form>
+    <TextInput label="Username" bind:value={username} message={'your username here'} errorMsg={errorMsg.username} />
+    <TextInput label="Password" bind:value={password} message={'your password here'} errorMsg={errorMsg.password} type="password" />
 
-
-
-<form id="form">
-
-    <TextInput label="Username" bind:value={username} message={'your username here'} errorMsg={errorMsg.username}  autofocus=true ></TextInput>
-    <TextInput label="Password" bind:value={password} message={'your password here'} errorMsg={errorMsg.password} type="password" ></TextInput>
-
-    <Button label="Login" onClick={login} />
-
-</form>
+    <Button onClick={login}>Login</Button>
+</Form>
 
 
 

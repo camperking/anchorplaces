@@ -25,6 +25,7 @@
 .TextInput {
     position: relative;
     margin-bottom: 0.5em;
+    width: 100%;
 }
 
 input {
@@ -32,6 +33,7 @@ input {
     border: none;
     border-bottom: 3px solid gray;
     transition: border-bottom-color 1s;
+    width: 100%;
 }
 
 input:focus {

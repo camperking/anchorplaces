@@ -4,12 +4,13 @@
     import { registerScheme } from '../../validationSchemes.js';
 
     import Error from '../ui/Error.svelte';
+    import Form from '../ui/Form.svelte';
     import TextInput from '../ui/TextInput.svelte';
     import Button from '../ui/Button.svelte';
 
     const { session } = stores();
     
-    export let destination = '/';
+    export let redirect = '/';
 
     let username = '';
     let password = '';
@@ -42,7 +43,7 @@ async function register() {
 
                 if (data.sessionid) {
                     $session.id = data.sessionid;
-                    goto(destination);
+                    goto(redirect);
                 } else {
                     error = data.error;
                 }
@@ -61,29 +62,19 @@ async function register() {
 
 </script>
 
-<style>
 
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+<style>
 
 </style>
 
 
-<form id="form">
-
-    <TextInput label="Username" bind:value={username} message={'your username here'} errorMsg={errorMsg.username}  autofocus=true ></TextInput>
+<Form>
+    <TextInput label="Username" bind:value={username} message={'your username here'} errorMsg={errorMsg.username} ></TextInput>
     <TextInput label="Password" bind:value={password} message={'your password here'} errorMsg={errorMsg.password} type="password" ></TextInput>
     <TextInput label="Email" bind:value={email} message={'your email here'} errorMsg={errorMsg.email} ></TextInput>
 
-    <Button label="Sign Up" onClick={register} />
-
-    <!-- <div class="form-item">
-        <input on:click={register} type="button" value="Register"/>
-    </div> -->
-</form>
+    <Button onClick={register}>Sign Up</Button>
+</Form>
 
 {#if error}
     <Error on:close={() => error = false}>{error}</Error>
