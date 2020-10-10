@@ -1,18 +1,23 @@
 <script>
 	import { stores } from '@sapper/app';
+	import Sidepanel from './ui/Sidepanel/Sidepanel.svelte';
+	import SidepanelItem from './ui/Sidepanel/SidepanelItem.svelte';
 	import Button from './ui/Button.svelte';
 	import Menu from './ui/Menu/Menu.svelte';
 	import MenuItem from './ui/Menu/MenuItem.svelte';
 	import Modal from './ui/Modal.svelte';
 	import Login from './Forms/Login.svelte';
 	import Register from './Forms/Register.svelte';
-
+	
 	const { session } = stores();
 
 	export let segment;
 
+	let showSidepanel = false;
+
 	let showLogin = false;
 	let showRegister = false;
+	
 
 </script>
 
@@ -46,29 +51,27 @@
 		box-shadow: inset 0px -3px 0px 0px #ff9100;
 	}
 
-	.current {
-		color: #ff9100;
-		box-shadow: inset 0px -3px 0px 0px #ff9100;
-    }
-
 </style>
 
 <div class="navbar">
 	<div class="nav-group">
-		<div class="nav-item material-icons" >menu</div>
+		
+		<div class="nav-item material-icons" on:click={() => showSidepanel = true}>menu</div>
+
+		<Sidepanel bind:visible={showSidepanel} >
+			<SidepanelItem href="" icon="anchor" {segment}>Explore</SidepanelItem>
+
+			<SidepanelItem href="profile" icon="account_box" {segment}>Profile</SidepanelItem>
+
+			<SidepanelItem href="map" icon="map" {segment}>Map</SidepanelItem>
+
+		</Sidepanel>
 
 	</div>
 
 	<div class="nav-group">Anchorplaces</div>
 
 	<div class="nav-group">
-		<div class="nav-item material-icons">gps_not_fixed</div>
-
-		{#if $session.id}
-		<a href="place/edit/new" class="nav-item material-icons" class:current="{segment === 'add'}">
-            add_location
-        </a>
-		{/if}
 		
 		{#if $session.id}
 			<Menu>
@@ -111,8 +114,3 @@
 		</Modal>
 	</div>
 </div>
-
-
-<!-- {#if showMenu}
-	<Menu on:close="{() => showMenu = false }" {segment}></Menu>
-{/if} -->

@@ -11,8 +11,6 @@ export async function preload() {
 	import { stores } from '@sapper/app';
 	import { onMount } from 'svelte';
 	import Place from '../components/Place.svelte';
-	import Menu from '../components/ui/Menu/Menu.svelte';
-	import MenuItem from '../components/ui/Menu/MenuItem.svelte';
 	import Button from '../components/ui/Button.svelte';
 
 	const { preloading, page, session } = stores();
@@ -31,27 +29,25 @@ export async function preload() {
 		margin: 1em auto;
 	}
 
+	.fab {
+		position: fixed;
+		bottom: 10%;
+		right: 10%;
+	}
+
+	.material-icons {
+		font-size: 64px;
+	}
+
 </style>
 
 <svelte:head>
 	<title>Anchorplace Map</title>
 </svelte:head>
 
-
-<Menu>
-	<div slot="menu-activator">
-		<Button weight="secondary" border={false} >
-        	<span class="material-icons">account_box</span>
-    	</Button>
-	</div>
-	<div slot="menu-list">
-		<MenuItem onClick={() => alert('asd')}>asdasd</MenuItem>
-		<MenuItem>hjlkgjljkl</MenuItem>
-		<MenuItem>assd</MenuItem>
-		<MenuItem>1234sdf</MenuItem>
-		<MenuItem>asdasdsdffs</MenuItem>
-	</div>
-</Menu>
+<div class="fab">
+	<Button fab={true} ><span class="material-icons">add</span></Button>
+</div>
 
 {#each places as place}
 <Place place={place} />

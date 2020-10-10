@@ -1,6 +1,5 @@
 <script>
 
-    import Button from '../Button.svelte';
     import MenuList from './MenuList.svelte';
 
     let elm;
@@ -17,8 +16,6 @@
         cursor: pointer;
     }
 
-
-
 </style>
 
 <svelte:window
@@ -28,7 +25,6 @@
         do {
             if (target === elm) {
                 showMenu = !showMenu;
-                // if (menuList) {console.log('asd'); menuList.style.transformOrigin = origin;}
                 return;
             }
             target = target.parentNode;
