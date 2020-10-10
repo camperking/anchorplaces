@@ -7,12 +7,13 @@ import Button from "../Button.svelte";
     export let openTab = '';
     let show = {};
 
-    show[openTab] = true;
+    $: showTab(openTab);
 
     async function showTab(tab) {
         if (!show[tab]) {
             Object.keys(show).forEach((key) => show[key] = false);
             await delay(200);
+            openTab = tab;
             show[tab] = true;
         }
 

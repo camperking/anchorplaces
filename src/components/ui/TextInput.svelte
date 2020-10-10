@@ -25,7 +25,9 @@
 .TextInput {
     position: relative;
     margin-bottom: 0.5em;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
 }
 
 input {
@@ -33,10 +35,9 @@ input {
     border: none;
     border-bottom: 3px solid gray;
     transition: border-bottom-color 1s;
-    width: 100%;
 }
 
-input:focus {
+input:focus, .inputValue {
     border-bottom-color: var(--primary-color, #ff9100);
 
 }
@@ -51,6 +52,13 @@ label {
 }
 
 input:focus ~ label {
+    opacity: 1;
+    top: -1.2em;
+    font-size: smaller;
+    cursor: default;
+}
+
+.labelValue {
     opacity: 1;
     top: -1.2em;
     font-size: smaller;
@@ -75,8 +83,8 @@ input:focus ~ .message {
 
 
 <div class="TextInput" on:click={() => elm.focus()}>
-    <input bind:this={elm} {...attrs} bind:value placeholder={label} />
-    <label for="input">{label}</label>
+    <input bind:this={elm} {...attrs} bind:value placeholder={label} class:inputValue={value} />
+    <label for="input" class:labelValue={value} >{label}</label>
     <div class="message" class:errorMsg>
         {#if errorMsg}
             {errorMsg}
