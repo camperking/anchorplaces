@@ -1,6 +1,6 @@
 <script>
 
-    import Vote from './Vote.svelte';
+    import Vote from '../Vote.svelte';
 
     export let pic;
     const { _id, path, name } = pic;

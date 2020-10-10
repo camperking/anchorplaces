@@ -38,7 +38,7 @@ async function login() {
         const userLogin = await loginScheme.validate(body, { abortEarly: false });
         // todo hash password
         try {
-                const response = await fetch('/account/login', {
+                const response = await fetch('/api/user/login', {
                     headers,
                     method: 'POST',
                     body: JSON.stringify(userLogin)

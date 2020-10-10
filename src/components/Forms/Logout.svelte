@@ -10,7 +10,7 @@
 
     function logout() {
             $session.id = false;
-            fetch('/account/logout');
+            fetch('/api/user/logout');
             goto(redirect);
     }
 </script>

@@ -1,6 +1,6 @@
-import { db } from '../../db.js';
-import getHash from '../../hash.js';
-import { loginScheme } from '../../validationSchemes.js';
+import { db } from '../../../db.js';
+import getHash from '../../../hash.js';
+import { loginScheme } from '../../../validationSchemes.js';
 
 
 export async function post(req, res, next) {

@@ -55,7 +55,7 @@
 
 <div class="navbar">
 	<div class="nav-group">
-		
+
 		<div class="nav-item material-icons" on:click={() => showSidepanel = true}>menu</div>
 
 		<Sidepanel bind:visible={showSidepanel} >
@@ -64,6 +64,8 @@
 			<SidepanelItem href="profile" icon="account_box" {segment}>Profile</SidepanelItem>
 
 			<SidepanelItem href="map" icon="map" {segment}>Map</SidepanelItem>
+
+			<SidepanelItem href="about" icon="help" {segment}>About</SidepanelItem>
 
 		</Sidepanel>
 

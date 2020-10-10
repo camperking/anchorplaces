@@ -1,7 +1,7 @@
 <script>
     import { stores } from '@sapper/app';
 
-    import Logout from '../components/Forms/Logout.svelte'
+    import Logout from '../../components/Forms/Logout.svelte'
 
     const { session } = stores();
 </script>

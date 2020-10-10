@@ -1,6 +1,6 @@
-import { db } from '../../../db.js';
+import { db } from '../../../../db.js';
 import { ObjectID } from 'mongodb';
-import authenticate from '../../account/_auth.js';
+import authenticate from '../../user/_auth.js';
 import hasVoted from '../_hasVoted.js';
 
 export async function get (req, res) {
@@ -12,28 +12,20 @@ export async function get (req, res) {
 
     const user = await authenticate(req.session.id);
 
-    
-
     if (user) {
 
         let object = new ObjectID(objectid);
 
         const voted = await hasVoted(user, object, key);
 
-        if (voted.vote > -1 || !voted) {
+        if (voted) {
 
             const votes = db.collection('votes');
 
-            const vote = {
-                object,
-                key,
-                userid: user._id,
-                vote: -1
-            }
-
-            await votes.replaceOne({ object, key, userid: user._id }, vote, { upsert: true });
+            votes.deleteOne({ object, key, userid: user._id });
 
         }
+
 
     }
 

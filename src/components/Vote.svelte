@@ -16,7 +16,7 @@
     let hasVoted = false;
 
     onMount(() => {
-		fetch('/vote/' + url )
+		fetch('/api/vote/' + url )
             .then(response => response.json())
             .then(data => {
                 sum = data.sum;
@@ -37,14 +37,14 @@ function voteUp () {
             hasVoted = 1;
             sum = sum + 1;
 
-            fetch('/vote/up/' + url);
+            fetch('/api/vote/up/' + url);
 
         } else {
 
             hasVoted = false;
             sum = sum - 1;
             
-            fetch('/vote/del/' + url);
+            fetch('/api/vote/del/' + url);
 
         }
 
@@ -63,14 +63,14 @@ function voteDown () {
             hasVoted = -1;
             sum = sum - 1;
 
-            fetch('/vote/down/' + url);
+            fetch('/api/vote/down/' + url);
 
         } else {
 
             hasVoted = false;
             sum = sum + 1;
             
-            fetch('/vote/del/' + url);
+            fetch('/api/vote/del/' + url);
 
         }
 

@@ -2,7 +2,7 @@ import { db } from '../../../db.js';
 import formidable from 'formidable';
 import Jimp from 'jimp';
 import { ObjectID } from 'mongodb';
-import authenticate from '../../account/_auth.js';
+import authenticate from '../user/_auth.js';
 
 const uploadDir = './static/pics/';
 const webPicDir = './pics/';

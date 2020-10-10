@@ -2,7 +2,7 @@
     import { stores } from '@sapper/app';
     import { slide } from 'svelte/transition';
     import Vote from './Vote.svelte';
-    import Pic from './Pic.svelte';
+    import Pic from './Pic/Pic.svelte';
 
     const { preloading, page, session } = stores();
 
