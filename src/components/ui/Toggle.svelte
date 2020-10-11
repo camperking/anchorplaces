@@ -8,16 +8,14 @@
 <style>
 
     .toggle {
-        /* border-rad; */
         display: flex;
         align-items: center;
-        /* flex-direction: row; */
     }
 
     .checkbox {
         position: relative;
         appearance: none;
-        width: 2.5em;
+        min-width: 2.5em;
         height: 1.5em;
         border-radius: 1em;
         border: 2px solid gray;
@@ -39,13 +37,13 @@
     }
 
     .checkbox:checked {
-        /* background-color: #ff9100; */
         border-color: #ff9100;
         transition: all 0.4s;
     }
 
     .checkbox:checked::before {
-        background-color: black;
+        background-color: brown;
+        
         left: 49%;
         transition: all 0.4s;
     }
@@ -56,10 +54,8 @@
 
 </style>
 
-<!-- <div class="toggle-component"> -->
     <div class="toggle">
         <input type="checkbox" class="checkbox" bind:checked={toggled} />
         <div class="label">{label}</div>
     </div>
     
-<!-- </div> -->

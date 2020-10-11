@@ -8,6 +8,7 @@ import SelectInput from '../ui/SelectInput.svelte';
 import ShelterInput from '../ui/ShelterInput/ShelterInput.svelte';
 import Toggle from '../ui/Toggle.svelte';
 import Services from './Services.svelte';
+import ExpansionPanel from '../ui/ExpansionPanel.svelte';
 
     let errorMsg = {};
 
@@ -18,9 +19,6 @@ import Services from './Services.svelte';
     let depth;
     let ground;
     let shelter;
-
-    let toggled;
-
     let services = [
         { name: 'Diesel' },
         { name: 'Gas' },
@@ -40,31 +38,56 @@ import Services from './Services.svelte';
 
 <style>
 
+    .general-panel {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .shelter-panel {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
 </style>
 
-<Form>
-    <TextInput label="Name" bind:value={name} message={'the name of the anchorplace'} errorMsg={errorMsg.name} />
+<ExpansionPanel panels={['General', 'Position', 'Shelter', 'More']} let:panel>
+    {#if panel === 'General'}
 
-    <TextField bind:value={description} placeholder="please give a short description of the anchorplace"></TextField>
+        <div class="general-panel">
+            <TextInput label="Name" bind:value={name} message={'the name of the anchorplace'} errorMsg={errorMsg.name} />
 
-    <TextInput label="Depth" bind:value={depth} message={'the depth of the anchorplace in m'} errorMsg={errorMsg.depth} type="number" />
+            <TextField bind:value={description} placeholder="please give a short description of the anchorplace"></TextField>
 
-    <GeoInput bind:latitude bind:longitude></GeoInput>
+            <TextInput label="Depth" bind:value={depth} message={'depth in m'} errorMsg={errorMsg.depth} type="number" width={'small'} />
+        </div>
 
-    <SelectInput label="Ground" bind:value={ground}>
-        <option>sand</option>
-        <option>gravel</option>
-        <option>mud</option>
-        <option>clay</option>
-        <option>rocks</option>
-        <option>plants</option>
-    </SelectInput>
+    {:else if panel === 'Position'}
 
-    <ShelterInput bind:shelter ></ShelterInput>
+        <GeoInput bind:latitude bind:longitude></GeoInput>
 
-    <Services bind:services ></Services>
+    {:else if panel === 'Shelter'}
 
-    {JSON.stringify(services)}
+        <div class="shelter-panel">
+            <ShelterInput bind:shelter ></ShelterInput>
 
-    <Button>Submit</Button>
-</Form>
+            <SelectInput label="Ground" bind:value={ground}>
+                <option>sand</option>
+                <option>gravel</option>
+                <option>mud</option>
+                <option>clay</option>
+                <option>rocks</option>
+                <option>plants</option>
+            </SelectInput>
+        </div>
+
+    {:else if panel === 'More'}
+            
+            <Services bind:services ></Services>
+
+    {/if}
+</ExpansionPanel>
+
+<Button>Submit</Button>

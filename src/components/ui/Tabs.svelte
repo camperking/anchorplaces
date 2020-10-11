@@ -1,5 +1,7 @@
 <script>
 
+
+
     export let tabs = [];
     export let openTab = '';
     let show = {};
@@ -9,24 +11,14 @@
     async function showTab(tab) {
         if (!show[tab]) {
             Object.keys(show).forEach((key) => show[key] = false);
-            await delay(200);
             openTab = tab;
             show[tab] = true;
         }
-
     }
-
-    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 </script>
 
 <style>
-
-    .tabs {
-        margin-bottom: 1em;
-        
-        /* height: 10em; */
-    }
 
     .tab-bar {
         display: flex;
@@ -40,7 +32,7 @@
         cursor: pointer;
         transition: border-bottom-color 0.5s;
         width: 100%;
-        /* margin-bottom: 1em; */
+        text-align: center;
     }
 
     .tab-control:hover, .active {
@@ -48,6 +40,10 @@
     }
 
     .tab {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         padding: 1em;
         border-left: 1px solid gray;
         border-right: 1px solid gray;
@@ -67,12 +63,12 @@
         {/each}
     </div>
 
-    <div class="tab">
-        {#each tabs as tab}
-            {#if show[tab]}
+    {#each tabs as tab}
+        {#if show[tab]}
+            <div class="tab">
                 <slot {tab} />
-            {/if}
-        {/each}
-    </div>
+            </div>
+        {/if}
+    {/each}
     
 </div>

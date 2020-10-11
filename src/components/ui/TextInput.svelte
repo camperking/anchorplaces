@@ -6,12 +6,14 @@
         message,
         errorMsg,
         type,
+        width
     }
 
     let value = '';
     let label = '';
     let message = '';
     let type = 'text';
+    let width = 'medium';
     let errorMsg = false;
 
     const attrs = { type };
@@ -36,6 +38,7 @@ input {
     border: none;
     border-bottom: 3px solid gray;
     transition: border-bottom-color 1s;
+    min-width: 5em;
 }
 
 input:focus, .inputValue {
@@ -80,11 +83,35 @@ input:focus ~ .message {
     opacity: 1;
 }
 
+.width-small {
+    width: 5em;
+}
+
+.width-medium {
+    width: 15em;
+}
+
+.width-large {
+    width: 20em;
+}
+
+
 </style>
 
 
-<div class="TextInput" on:click={() => elm.focus()}>
-    <input bind:this={elm} {...attrs} bind:value placeholder={label} class:inputValue={value} />
+<div 
+    class="TextInput"
+    on:click={() => elm.focus()}
+    class:width-small={width == 'small'}
+    class:width-medium={width == 'medium'}
+    class:width-large={width == 'large'} >
+
+    <input 
+        bind:this={elm}
+        {...attrs}
+        bind:value
+        placeholder={label}
+        class:inputValue={value} />
     <label for="input" class:labelValue={value} >{label}</label>
     <div class="message" class:errorMsg>
         {#if errorMsg}

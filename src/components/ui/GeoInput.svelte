@@ -1,8 +1,7 @@
 <script>
 
     import Button from './Button.svelte';
-    import Tab from './Tabs/Tab.svelte';
-    import TabBar from './Tabs/TabBar.svelte';
+    import TabBar from './Tabs.svelte';
     import TextInput from './TextInput.svelte';
 
     export let latitude = '';
@@ -40,12 +39,12 @@
 <div class="geo-input">
     <TabBar tabs={['Raw', 'GPS', 'Map']} let:tab bind:openTab>
         {#if tab === 'Raw'}
-            <Tab>
+            
                 <TextInput label="Latitude" bind:value={latitude} message={'the latitude of the anchorplace'} errorMsg={errorMsg.latitude} />
                 <TextInput label="Longitude" bind:value={longitude} message={'the longitude of the anchorplace'} errorMsg={errorMsg.longitude} />
-            </Tab>
+
         {:else if tab === 'GPS'}
-            <Tab>
+
                 {#if latitude && longitude}
                     <div>{GPSMessage}</div>
                     <div>{latitude}</div>
@@ -54,11 +53,11 @@
                     <Button onClick={getLocation}>get position</Button>
                     <div>{GPSMessage}</div>
                 {/if}
-            </Tab>
+
         {:else if tab === 'Map'}
-            <Tab>
+
                 <div>Map cooming soon...</div>
-            </Tab>
+
         {/if}
     </TabBar>
 </div>

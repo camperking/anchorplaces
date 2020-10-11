@@ -7,6 +7,10 @@
 
 <style>
 
+    .shelter-input {
+        width: 6em;
+    }
+
     .shelter-input:hover .title {
         border-bottom-color: #ff9100;
     }
@@ -14,6 +18,7 @@
     .title {
         border-bottom: 3px solid gray;
         text-align: center;
+        margin-bottom: 0.5em;
     }
 
     .shelter-controls {
