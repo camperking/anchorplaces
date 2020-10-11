@@ -6,6 +6,8 @@
     import TextField from '../ui/TextField.svelte';
 import SelectInput from '../ui/SelectInput.svelte';
 import ShelterInput from '../ui/ShelterInput/ShelterInput.svelte';
+import Toggle from '../ui/Toggle.svelte';
+import Services from './Services.svelte';
 
     let errorMsg = {};
 
@@ -17,7 +19,21 @@ import ShelterInput from '../ui/ShelterInput/ShelterInput.svelte';
     let ground;
     let shelter;
 
+    let toggled;
 
+    let services = [
+        { name: 'Diesel' },
+        { name: 'Gas' },
+        { name: 'Water' },
+        { name: 'Boat repair' },
+        { name: 'Engine repair' },
+        { name: 'Sailmaker' },
+        { name: 'Moorings' },
+        { name: 'Shower' },
+        { name: 'Cafes' },
+        { name: 'Restaurants' },
+        { name: 'Supermarket' }
+    ];
 
 
 </script>
@@ -46,10 +62,9 @@ import ShelterInput from '../ui/ShelterInput/ShelterInput.svelte';
 
     <ShelterInput bind:shelter ></ShelterInput>
 
+    <Services bind:services ></Services>
 
-    
-
-
+    {JSON.stringify(services)}
 
     <Button>Submit</Button>
 </Form>
