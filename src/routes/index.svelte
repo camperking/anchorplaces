@@ -46,7 +46,9 @@ export async function preload() {
 </svelte:head>
 
 <div class="fab">
-	<Button fab={true} ><span class="material-icons">add</span></Button>
+	<a href="place/new">
+		<Button fab={true}><span class="material-icons">add</span></Button>
+	</a>
 </div>
 
 {#each places as place}

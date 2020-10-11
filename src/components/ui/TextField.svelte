@@ -1,11 +1,12 @@
 <script>
     export let placeholder = '';
-    export let value;
+    export let value = '';
 </script>
 
 <style>
     textarea {
         border: 1px solid gray;
+        margin-bottom: 1em;
     }
 
     textarea:focus {
