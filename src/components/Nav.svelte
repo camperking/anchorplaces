@@ -99,9 +99,9 @@
 			</div>
 			<div slot="menu-list">
 				<MenuItem>
-					<Button onClick={() => showLogin = true}>Login</Button>
+					<Button on:click={() => showLogin = true}>Login</Button>
 					
-					<Button weight="secondary" onClick={() => showRegister = true}>Sign Up</Button>
+					<Button weight="secondary" on:click={() => showRegister = true}>Sign Up</Button>
 				</MenuItem>
 			</div>
 		</Menu>
