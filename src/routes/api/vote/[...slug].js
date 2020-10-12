@@ -1,4 +1,4 @@
-import { db } from '../../../db.js';
+import { votes } from '../../../db.js';
 import { ObjectID } from 'mongodb';
 import authenticate from '../user/_auth.js';
 import hasVoted from './_hasVoted.js';
@@ -11,9 +11,7 @@ export async function get(req, res) {
 
     const object = new ObjectID(objectid);
 
-    const votesdb = db.collection('votes');
-
-    const votes = await votesdb.find({ object, key }).toArray();
+    const allVotes = await votes.find({ object, key }).toArray();
 
     let doc = {
         sum: 0,
@@ -22,7 +20,7 @@ export async function get(req, res) {
 
     let sum = 0;
 
-    votes.forEach( vote => {
+    allVotes.forEach( vote => {
         sum = sum + vote.vote;
     });
 

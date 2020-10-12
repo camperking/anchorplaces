@@ -15,7 +15,6 @@
 
     .wrapper {
         display: flex;
-        /* align-items: center; */
         border-bottom: 3px solid gray;
         transition: border-bottom-color 0.5s;
     }
@@ -25,7 +24,6 @@
     }
 
     .wrapper::after {
-        /* content: "<span class="material-icons">down</span>"; */
         content: "▼";
         color: gray;
         margin-top: 0.25em;
@@ -37,21 +35,14 @@
         font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
         appearance: none;
         min-width: 5rem;
-        /* height: 2em; */
         font-size: 1em;
         border: none;
         text-align: center;
-        /* border-bottom: 3px solid gray; */
     }
-
-    /* select:focus {
-        border-bottom: 3px solid #ff9100;
-    } */
 
     .label {
         font-size: 1em;
         color: gray;
-        /* margin-right: 0.5em; */
     }
 
     .message {

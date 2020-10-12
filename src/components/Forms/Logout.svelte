@@ -15,4 +15,4 @@
     }
 </script>
 
-<Button onClick={logout} weight="secondary" >Logout</Button>
+<Button on:click={logout} weight="secondary" >Logout</Button>

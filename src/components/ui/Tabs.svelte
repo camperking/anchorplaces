@@ -1,7 +1,5 @@
 <script>
 
-
-
     export let tabs = [];
     export let openTab = '';
     let show = {};

@@ -6,6 +6,7 @@
 <style>
     textarea {
         border: 1px solid gray;
+        min-height: 4em;
     }
 
     textarea:focus {
@@ -13,4 +14,4 @@
     }
 </style>
 
-<textarea bind:value {placeholder}></textarea>
+<textarea bind:value {placeholder} on:change ></textarea>

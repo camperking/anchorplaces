@@ -1,14 +1,13 @@
 <script>
     import Button from '../ui/Button.svelte';
-    import Form from '../ui/Form.svelte';
     import TextInput from '../ui/TextInput.svelte';
     import GeoInput from '../ui/GeoInput.svelte';
     import TextField from '../ui/TextField.svelte';
-import SelectInput from '../ui/SelectInput.svelte';
-import ShelterInput from '../ui/ShelterInput/ShelterInput.svelte';
-import Toggle from '../ui/Toggle.svelte';
-import Services from './Services.svelte';
-import ExpansionPanel from '../ui/ExpansionPanel.svelte';
+    import SelectInput from '../ui/SelectInput.svelte';
+    import ShelterInput from '../ui/ShelterInput/ShelterInput.svelte';
+    import Services from './Services.svelte';
+    import ExpansionPanel from '../ui/ExpansionPanel.svelte';
+    import PicUpload from './PicUpload/PicUpload.svelte';
 
     let errorMsg = {};
 
@@ -32,6 +31,7 @@ import ExpansionPanel from '../ui/ExpansionPanel.svelte';
         { name: 'Restaurants' },
         { name: 'Supermarket' }
     ];
+    let pictures;
 
 
 </script>
@@ -53,27 +53,48 @@ import ExpansionPanel from '../ui/ExpansionPanel.svelte';
 
 </style>
 
-<ExpansionPanel panels={['General', 'Position', 'Shelter', 'More']} let:panel>
+
+<ExpansionPanel panels={['General', 'Position', 'Pictures', 'Shelter', 'More']} let:panel>
     {#if panel === 'General'}
 
         <div class="general-panel">
-            <TextInput label="Name" bind:value={name} message={'the name of the anchorplace'} errorMsg={errorMsg.name} />
+            <TextInput
+                label="Name"
+                bind:value={name}
+                message="the name of the anchorplace"
+                errorMsg={errorMsg.name} />
 
-            <TextField bind:value={description} placeholder="please give a short description of the anchorplace"></TextField>
+            <TextField
+                bind:value={description}
+                placeholder="please give a short description of the anchorplace" />
 
-            <TextInput label="Depth" bind:value={depth} message={'depth in m'} errorMsg={errorMsg.depth} type="number" width={'small'} />
+            <TextInput 
+                label="Depth"
+                bind:value={depth}
+                message="depth in m"
+                errorMsg={errorMsg.depth}
+                type="number"
+                width="small" />
         </div>
 
     {:else if panel === 'Position'}
 
-        <GeoInput bind:latitude bind:longitude></GeoInput>
+        <GeoInput 
+            bind:latitude
+            bind:longitude />
+
+    {:else if panel === 'Pictures'}
+
+        <PicUpload bind:pictures ></PicUpload>
 
     {:else if panel === 'Shelter'}
 
         <div class="shelter-panel">
-            <ShelterInput bind:shelter ></ShelterInput>
+            <ShelterInput bind:shelter />
 
-            <SelectInput label="Ground" bind:value={ground}>
+            <SelectInput 
+                label="Ground"
+                bind:value={ground} >
                 <option>sand</option>
                 <option>gravel</option>
                 <option>mud</option>
@@ -85,7 +106,7 @@ import ExpansionPanel from '../ui/ExpansionPanel.svelte';
 
     {:else if panel === 'More'}
             
-            <Services bind:services ></Services>
+            <Services bind:services />
 
     {/if}
 </ExpansionPanel>

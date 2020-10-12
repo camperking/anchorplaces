@@ -1,4 +1,4 @@
-import { db } from '../../../db.js';
+import { users } from '../../../db.js';
 import getHash from '../../../hash.js';
 import { registerScheme } from '../../../validationSchemes.js';
 
@@ -9,8 +9,6 @@ export async function post(req, res, next) {
         const body = await registerScheme.validate(req.body);
         
         const { username, password, email } = body;
-
-        const users = db.collection('users');
 
         const user = await users.find({ 'username': username }).toArray();
 
@@ -37,18 +35,13 @@ export async function post(req, res, next) {
             res.end(JSON.stringify({sessionid, userid }));
 
         } else {         
-            throw 'User exists';
+            res.end('{ "error": "user exists" }');
         }
-
 
     } catch (err) {
         
-        let errMsg = {error: err};  // send as response
+        console.log(err);
 
-        if (err.message) {      // if yup validation error get error message
-            errMsg.error = err.message;
-        }
-
-        res.end(JSON.stringify(errMsg));
+        res.end('{ "error": "bad input" }');
     }
 }

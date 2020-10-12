@@ -1,4 +1,4 @@
-import { db } from '../../../db.js';
+import { users } from '../../../db.js';
 import getHash from '../../../hash.js';
 import { loginScheme } from '../../../validationSchemes.js';
 
@@ -10,8 +10,6 @@ export async function post(req, res, next) {
         const body = await loginScheme.validate(req.body);
 
         const { username, password } = body;
-
-        const users = db.collection('users');
 
         const user = await users.find({ username }).toArray();
 

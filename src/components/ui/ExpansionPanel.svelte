@@ -4,7 +4,7 @@
     export let panels = [];
 
     let showPanel = panels.map(() => false);
-    showPanel[0] = true;
+    showPanel[2] = true;
 
     function changePanel(i) {
         if (!showPanel[i]) {

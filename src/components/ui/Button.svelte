@@ -1,18 +1,18 @@
 <script>
 
 export {
-    onClick,
     weight,
     size,
     border,
-    fab
+    fab,
+    disable
 };
 
-let onClick = () => {};
 let weight = 'primary';
 let size = 'medium';
 let border = true;
 let fab = false;
+let disable = false;
 
 </script>
 
@@ -69,17 +69,27 @@ button {
     padding: 1em;
 }
 
+.disable {
+    background-color: lightgray;
+    color: black;
+}
+
+.disable:hover {
+    background-color: lightgray;
+}
+
 </style>
 
 <button 
     type="button"
-    on:click={onClick} 
+    on:click 
     class:border={border}
     class:fab={fab}
     class:weight-primary={weight === 'primary'}
     class:weight-secondary={weight === 'secondary'}
     class:size-small={size === 'small'}
     class:size-medium={size === 'medium'}
-    class:size-large={size === 'large'} >
+    class:size-large={size === 'large'}
+    class:disable >
     <slot />
 </button>

@@ -10,7 +10,7 @@
     .services {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-evenly;
+        justify-content: space-between;
         width: 100%;
     }
 
@@ -34,6 +34,7 @@
             <Toggle bind:toggled={services[i].available} label={service.name}></Toggle>
         </div>
     {/each}
+    <div class="service"></div>
 
      
 </div>

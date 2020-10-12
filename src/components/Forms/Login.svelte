@@ -74,10 +74,10 @@ async function login() {
 
 
 <Form>
-    <TextInput label="Username" bind:value={username} message={'your username here'} errorMsg={errorMsg.username} />
-    <TextInput label="Password" bind:value={password} message={'your password here'} errorMsg={errorMsg.password} type="password" />
+    <TextInput label="Username" bind:value={username} message="your username here" errorMsg={errorMsg.username} />
+    <TextInput label="Password" bind:value={password} message="your password here" errorMsg={errorMsg.password} type="password" />
 
-    <Button onClick={login}>Login</Button>
+    <Button on:click={login}>Login</Button>
 </Form>
 
 

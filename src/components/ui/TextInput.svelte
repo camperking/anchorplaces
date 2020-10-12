@@ -111,7 +111,8 @@ input:focus ~ .message {
         {...attrs}
         bind:value
         placeholder={label}
-        class:inputValue={value} />
+        class:inputValue={value}
+        on:change />
     <label for="input" class:labelValue={value} >{label}</label>
     <div class="message" class:errorMsg>
         {#if errorMsg}

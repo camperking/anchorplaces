@@ -1,4 +1,4 @@
-import { db } from '../../../../db.js';
+import { votes } from '../../../../db.js';
 import { ObjectID } from 'mongodb';
 import authenticate from '../../user/_auth.js';
 import hasVoted from '../_hasVoted.js';
@@ -19,8 +19,6 @@ export async function get (req, res) {
         const voted = await hasVoted(user, object, key);
 
         if (voted.vote < 1 || !voted) {
-
-            const votes = db.collection('votes');
 
             const vote = {
                 object,

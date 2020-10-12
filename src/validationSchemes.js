@@ -10,3 +10,9 @@ export const loginScheme = object().shape({
     username: string().required(),
     password: string().required()
 });
+
+export const picInfo = object().shape({
+    _id : string().required(),
+    title: string(),
+    desc: String()
+});

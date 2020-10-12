@@ -1,6 +1,6 @@
-import { db } from '../../../db.js';
-import formidable from 'formidable';
-import Jimp from 'jimp';
+import { places } from '../../../db.js';
+// import formidable from 'formidable';
+// import Jimp from 'jimp';
 import { ObjectID } from 'mongodb';
 import authenticate from '../user/_auth.js';
 
@@ -10,8 +10,6 @@ const webPicDir = './pics/';
 let user;
 
 export async function get(req, res, next) {
-
-    const places = db.collection('places');
 
     // /place/:method/:location/:many
     // methods are id || rnd || near
@@ -62,164 +60,164 @@ export async function get(req, res, next) {
 }
 
 
-export async function post(req, res, next) {
+// export async function post(req, res, next) {
 
-    const [ placeid ] = req.params.slug;
+//     const [ placeid ] = req.params.slug;
 
-    // get user document
-    user = await authenticate(req.session.id);
+//     // get user document
+//     user = await authenticate(req.session.id);
 
-    if (user) {
+//     if (user) {
 
-        res.statusCode = 200;
-        res.end();
+//         res.statusCode = 200;
+//         res.end();
 
-        // parse document
-        const doc = await parseForm(req);
+//         // parse document
+//         const doc = await parseForm(req);
 
-        // todo validate inputs
+//         // todo validate inputs
 
-        const places = db.collection('places');
+//         const places = db.collection('places');
 
-        if (placeid == 0) {    // new place from user
+//         if (placeid == 0) {    // new place from user
 
-            // set creation date
-            doc.created = new Date();
+//             // set creation date
+//             doc.created = new Date();
 
-            // set author of the document
-            doc.author = user.username;
-            doc.author_id = user._id;
+//             // set author of the document
+//             doc.author = user.username;
+//             doc.author_id = user._id;
 
-            places.insertOne(doc);
+//             places.insertOne(doc);
 
-        } else {    // placeid is something
+//         } else {    // placeid is something
 
-            console.log(placeid);
+//             console.log(placeid);
 
-            // check first if object exists and author is user
-            const _id = new ObjectID(placeid);
+//             // check first if object exists and author is user
+//             const _id = new ObjectID(placeid);
 
-            let place = await places.findOne({_id, author_id: user._id});
+//             let place = await places.findOne({_id, author_id: user._id});
 
-            if (user._id.toString() === place.author_id.toString()) {
+//             if (user._id.toString() === place.author_id.toString()) {
 
-                // set edit date
-                doc.edited = new Date;
+//                 // set edit date
+//                 doc.edited = new Date;
 
-                places.updateOne({ _id, author_id: user._id }, { $set: doc });
+//                 places.updateOne({ _id, author_id: user._id }, { $set: doc });
 
-            }
+//             }
 
-        }
+//         }
 
-    } else {
-        res.end('no access');
-    }
+//     } else {
+//         res.end('no access');
+//     }
 
-}
+// }
 
-export async function del (req, res, next) {
+// export async function del (req, res, next) {
 
-    // authentication = get user document
-    user = await authenticate(req.session.id);
+//     // authentication = get user document
+//     user = await authenticate(req.session.id);
 
-    if (user) {
+//     if (user) {
 
-        res.statusCode = 200;
-        res.end();
+//         res.statusCode = 200;
+//         res.end();
 
-        const places = db.collection('places');
+//         const places = db.collection('places');
 
-        const [ placeId ] = req.params.slug;
+//         const [ placeId ] = req.params.slug;
 
-        places.deleteOne({ _id: placeId, authorId: user._id });  
+//         places.deleteOne({ _id: placeId, authorId: user._id });  
 
-    } else {
-        res.end('no access');
-    }
+//     } else {
+//         res.end('no access');
+//     }
 
-}
+// }
 
-async function parseForm (req) {
+// async function parseForm (req) {
 
-    const form = formidable({multiples: true, uploadDir: uploadDir, keepExtensions: true});
+//     const form = formidable({multiples: true, uploadDir: uploadDir, keepExtensions: true});
 
-    let parsedForm = await new Promise(function (resolve, reject) {
-        form.parse(req, (err, fields, files) => {
-            if (err) reject(err);
+//     let parsedForm = await new Promise(function (resolve, reject) {
+//         form.parse(req, (err, fields, files) => {
+//             if (err) reject(err);
 
-            resolve({ fields, files });
-        });
-    });
+//             resolve({ fields, files });
+//         });
+//     });
 
-    const fields = parsedForm.fields;
-    const files = parsedForm.files;
+//     const fields = parsedForm.fields;
+//     const files = parsedForm.files;
     
-    let pictures = [];
+//     let pictures = [];
 
-    if (files.pictures !== undefined) {
-        if (files.pictures.size > 0) {      // only one picture uploaded
+//     if (files.pictures !== undefined) {
+//         if (files.pictures.size > 0) {      // only one picture uploaded
             
-            let {path, name, size, type} = files.pictures;
+//             let {path, name, size, type} = files.pictures;
             
-            path = await convertPics(path);
+//             path = await convertPics(path);
                 
-            pictures.push({ path, name, size, type });
+//             pictures.push({ path, name, size, type });
                 
-        } else if (files.pictures.length >= 1) {    // more pics uploaded
+//         } else if (files.pictures.length >= 1) {    // more pics uploaded
             
-                let newPic;
-                newPic = files.pictures.map( async (val, index) => {
+//                 let newPic;
+//                 newPic = files.pictures.map( async (val, index) => {
 
-                    let {path, name, size, type} = files.pictures[index];
+//                     let {path, name, size, type} = files.pictures[index];
                     
-                    path = await convertPics(path);
+//                     path = await convertPics(path);
                 
-                    return { path, name, size, type };
+//                     return { path, name, size, type };
                 
-                });
+//                 });
 
-                pictures = await Promise.all(newPic);
-        }
-    }
+//                 pictures = await Promise.all(newPic);
+//         }
+//     }
 
-    const doc = fields;
+//     const doc = fields;
 
-    const protection = JSON.parse(fields.protection);
-    const services = JSON.parse(fields.services);
+//     const protection = JSON.parse(fields.protection);
+//     const services = JSON.parse(fields.services);
 
-    doc.protection = protection;
-    doc.services = services;
+//     doc.protection = protection;
+//     doc.services = services;
 
-    if (pictures.length > 0) {
-        doc.pictures = pictures;
-    } 
+//     if (pictures.length > 0) {
+//         doc.pictures = pictures;
+//     } 
 
-    const lat = fields.latitude;
-    const lon = fields.longitude;
+//     const lat = fields.latitude;
+//     const lon = fields.longitude;
 
-    doc.location = {
-        type: 'Point',
-        coordinates: [ lon, lat ]
-    }
+//     doc.location = {
+//         type: 'Point',
+//         coordinates: [ lon, lat ]
+//     }
 
-    delete doc['latitude'];
-    delete doc['longitude'];
+//     delete doc['latitude'];
+//     delete doc['longitude'];
 
-    return doc;
+//     return doc;
         
-}
+// }
 
-async function convertPics (path) {
+// async function convertPics (path) {
 
-    let image = await Jimp.read(path);
+//     let image = await Jimp.read(path);
 
-    image.resize(1024, Jimp.AUTO);
-    image.write(path + '.web');
+//     image.resize(1024, Jimp.AUTO);
+//     image.write(path + '.web');
 
-    let filename = path.split('\\');
-    const webPath = webPicDir + filename[1] + '.web';
+//     let filename = path.split('\\');
+//     const webPath = webPicDir + filename[1] + '.web';
 
-    return webPath;
+//     return webPath;
 
-}
+// }

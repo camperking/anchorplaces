@@ -25,8 +25,6 @@
 
 async function register() {
 
-    dispatch('submit');
-
     const headers = {'Content-Type': 'application/json'};
     
     const body = {username, password, email};
@@ -39,7 +37,7 @@ async function register() {
         const newUser = await registerScheme.validate(body, { abortEarly: false });
         // todo hash password
         try {
-                const response = await fetch('/account/register', {
+                const response = await fetch('api/user/register', {
                     headers,
                     method: 'POST',
                     body: JSON.stringify(newUser)
@@ -49,9 +47,10 @@ async function register() {
 
                 if (data.sessionid) {
                     $session.id = data.sessionid;
+                    dispatch('submit');
                     goto(redirect);
                 } else {
-                    error = data.error;
+                    errorMsg.username = data.error;
                 }
             } catch (err) {
                 console.log('network');
@@ -75,11 +74,11 @@ async function register() {
 
 
 <Form>
-    <TextInput label="Username" bind:value={username} message={'your username here'} errorMsg={errorMsg.username} ></TextInput>
-    <TextInput label="Password" bind:value={password} message={'your password here'} errorMsg={errorMsg.password} type="password" ></TextInput>
-    <TextInput label="Email" bind:value={email} message={'your email here'} errorMsg={errorMsg.email} ></TextInput>
+    <TextInput label="Username" bind:value={username} message="your username here" errorMsg={errorMsg.username} ></TextInput>
+    <TextInput label="Password" bind:value={password} message="your password here" errorMsg={errorMsg.password} type="password" ></TextInput>
+    <TextInput label="Email" bind:value={email} message="your email here" errorMsg={errorMsg.email} ></TextInput>
 
-    <Button onClick={register}>Sign Up</Button>
+    <Button on:click={register}>Sign Up</Button>
 </Form>
 
 {#if error}

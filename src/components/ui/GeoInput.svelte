@@ -31,17 +31,16 @@
 </script>
 
 <style>
-    /* .geo-input {
-        
-    } */
+   
+
 </style>
 
 <div class="geo-input">
     <TabBar tabs={['Raw', 'GPS', 'Map']} let:tab bind:openTab>
         {#if tab === 'Raw'}
             
-                <TextInput label="Latitude" bind:value={latitude} message={'the latitude of the anchorplace'} errorMsg={errorMsg.latitude} />
-                <TextInput label="Longitude" bind:value={longitude} message={'the longitude of the anchorplace'} errorMsg={errorMsg.longitude} />
+                <TextInput label="Latitude" bind:value={latitude} message="the latitude of the anchorplace" errorMsg={errorMsg.latitude} />
+                <TextInput label="Longitude" bind:value={longitude} message="the longitude of the anchorplace" errorMsg={errorMsg.longitude} />
 
         {:else if tab === 'GPS'}
 
@@ -50,7 +49,7 @@
                     <div>{latitude}</div>
                     <div>{longitude}</div>
                 {:else}
-                    <Button onClick={getLocation}>get position</Button>
+                    <Button on:click={getLocation}>get position</Button>
                     <div>{GPSMessage}</div>
                 {/if}
 
