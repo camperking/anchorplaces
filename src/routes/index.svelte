@@ -52,7 +52,7 @@
 	</a>
 </div>
 
-<Place />
+<!-- <Place /> -->
 
 <!-- {#each places as place}
 <Place place={place} />

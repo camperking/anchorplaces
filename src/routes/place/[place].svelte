@@ -10,8 +10,6 @@
 
     export let place_id;
 
-
-
 </script>
 
 <style>

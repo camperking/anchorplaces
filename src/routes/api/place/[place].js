@@ -7,47 +7,73 @@ export async function get(req, res) {
 
     const placeid = req.params.place;
 
-    try {
+    if (placeid == 0) {
 
-        const _id = new ObjectID(placeid);
+        const user = req.query.user ? new ObjectID(req.query.user) : '';
+        const limit = req.query.limit ? Number(req.query.limit) : 8;
+        const latitude = req.query.lat ? Number(req.query.lat) : 0;
+        const longitude = req.query.lon ? Number(req.query.lon) : 0;
+        const dist = req.query.dist ? Number(req.query.dist) : 10000;
 
-        const place = await places.findOne({_id});
+        const placesResult = await places.find({
+            $or: [{author_id: user}, {}],
+            position: {
+                $near: {
+                    $geometry: {
+                        type: 'Point',
+                        coordinates: [longitude, latitude]
+                    },
+                    $maxDistance: dist
+                }
+            }
+        }).limit(limit).toArray();
 
-        if (place) {
+        res.end(JSON.stringify(placesResult));
+
+    } else {
+
+        try {
+
+            const _id = new ObjectID(placeid);
+
+            const place = await places.findOne({_id});
+
+            if (place) {
+                
+                const pictures = await Promise.all(place.pictures.map(async (id) => {
+
+                    const pic_id = new ObjectID(id);
+
+                    const picsData = await pics.findOne({_id: pic_id});
+                    
+                    return picsData;
+
+                }));
+
+                place.pictures = pictures;
+                // console.log(pictures);
+                // place.pictures.map(id => {
+
+                //     const pic_id = new ObjectID(id);
+
+                //     const picsData = await pics.findOne({_id: pic_id});
+                    
+                //     // console.log();
+
+                // });
+
+
+                res.end(JSON.stringify(place));
+            } else {
+                res.end('{ "error": "no place" }');
+            }
+
             
-            const pictures = await Promise.all(place.pictures.map(async (id) => {
 
-                const pic_id = new ObjectID(id);
-
-                const picsData = await pics.findOne({_id: pic_id});
-                
-                return picsData;
-
-            }));
-
-            place.pictures = pictures;
-            // console.log(pictures);
-            // place.pictures.map(id => {
-
-            //     const pic_id = new ObjectID(id);
-
-            //     const picsData = await pics.findOne({_id: pic_id});
-                
-            //     // console.log();
-
-            // });
-
-
-            res.end(JSON.stringify(place));
-        } else {
-            res.end('{ "error": "no place" }');
+        } catch (err) {
+            console.log(err);
+            res.end('{ "error": "bad id" }');
         }
-
-        
-
-    } catch (err) {
-        console.log(err);
-        res.end('{ "error": "bad id" }');
     }
 }
 
