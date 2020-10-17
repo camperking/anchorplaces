@@ -22,6 +22,7 @@
         background: white;
         transition: all 0.4s;
         font-size: medium;
+        cursor: pointer;
     }
 
     .checkbox::before {

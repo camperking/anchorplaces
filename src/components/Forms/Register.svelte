@@ -37,25 +37,25 @@ async function register() {
         const newUser = await registerScheme.validate(body, { abortEarly: false });
         // todo hash password
         try {
-                const response = await fetch('api/user/register', {
-                    headers,
-                    method: 'POST',
-                    body: JSON.stringify(newUser)
-                });
+            const response = await fetch('api/user/register', {
+                headers,
+                method: 'POST',
+                body: JSON.stringify(newUser)
+            });
 
-                const data = await response.json();
+            const data = await response.json();
 
-                if (data.sessionid) {
-                    $session.id = data.sessionid;
-                    dispatch('submit');
-                    goto(redirect);
-                } else {
-                    errorMsg.username = data.error;
-                }
-            } catch (err) {
-                console.log('network');
-                console.log(err);
+            if (data.sessionid) {
+                $session.id = data.sessionid;
+                dispatch('submit');
+                goto(redirect);
+            } else {
+                errorMsg.username = data.error;
             }
+        } catch (err) {
+            console.log('network');
+            console.log(err);
+        }
 
     } catch (err) {
         err.inner.forEach(error => {

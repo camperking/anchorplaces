@@ -7,13 +7,13 @@
 
     let files = [];
     let loading = '';
-    let update = true;
-
+    
     export let pictures = [];
+    export let pictureData = [];
 
-    //$: console.log(files);
+    function picUpload() {
 
-    $:  if (files.length > 0) {
+        if (files.length > 0) {
         loading = 'loading ' + files[0].name;
         
         const body = new FormData();
@@ -25,17 +25,15 @@
         })
             .then(res => res.json())
             .then(data => {
-                pictures.push(data);
-
-                update = false;
-
-                tick().then(() => {
-                    loading = 'Pic uploaded';
-                    update = true;
-                });
+                pictures.push(data._id);
+                pictureData.push(data);
+                files = [];
+                pictureData = pictureData;
+                loading = '';
         });
 
     }
+}
 
 </script>
 
@@ -50,14 +48,11 @@
 </style>
 
 <div class="pic-upload">
-    {#if update}
-        <PicGroup {pictures} />
-    {/if}
-    
 
-    <FileInput bind:files >Add Picture</FileInput>
+    <PicGroup pictures={pictureData} />
+    
+    <FileInput bind:files on:change={picUpload} >Add Picture</FileInput>
 
     {loading}
-    {pictures}
 
 </div>

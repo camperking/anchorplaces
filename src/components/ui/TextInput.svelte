@@ -36,7 +36,7 @@ input {
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     font-size: var(--font-size, medium);
     border: none;
-    border-bottom: 3px solid gray;
+    border-bottom: 2px solid gray;
     transition: border-bottom-color 1s;
     min-width: 5em;
 }

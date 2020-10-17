@@ -26,7 +26,7 @@
     .tab-control {
         padding: 0 1em;
         border: none;
-        border-bottom: 3px solid gray;
+        border-bottom: 1px solid gray;
         cursor: pointer;
         transition: border-bottom-color 0.5s;
         width: 100%;
@@ -56,7 +56,7 @@
     <div class="tab-bar">
         {#each tabs as tab}
             <div class="tab-control" on:click={() => showTab(tab)} class:active={show[tab]}>
-                <b>{tab}</b>
+                {tab}
             </div>
         {/each}
     </div>

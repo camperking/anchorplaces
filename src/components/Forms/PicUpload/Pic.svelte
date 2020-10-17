@@ -81,9 +81,7 @@
             bind:value={pic.title}
             label="Title"
             message="title of the picture"
-            on:change={() => disableSave = false} >
-            Title
-        </TextInput>
+            on:change={() => disableSave = false} />
 
         <TextField
                 bind:value={pic.desc}

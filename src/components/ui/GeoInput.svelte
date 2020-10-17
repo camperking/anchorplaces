@@ -6,8 +6,7 @@
 
     export let latitude = '';
     export let longitude = '';
-
-    let errorMsg = {};
+    export let errorMsg = {};
 
     let openTab  = 'Raw';
 

@@ -8,18 +8,18 @@
 <style>
 
     .shelter-input {
-        width: 6em;
+        margin-bottom: 1em;
     }
 
-    .shelter-input:hover .title {
+    /* .shelter-input:hover .title {
         border-bottom-color: #ff9100;
     }
 
     .title {
-        border-bottom: 3px solid gray;
+        border-bottom: 2px solid gray;
         text-align: center;
         margin-bottom: 0.5em;
-    }
+    } */
 
     .shelter-controls {
         display: grid;
@@ -29,7 +29,7 @@
 </style>
 
 <div class="shelter-input">
-    <div class="title">Shelter</div>
+    <!-- <div class="title">Shelter</div> -->
     <div class="shelter-controls">
 
         <ShelterButton bind:shelter={shelter.north_west} direction="north_west"></ShelterButton>

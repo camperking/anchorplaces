@@ -22,10 +22,18 @@ import ShelterIcon from "./ShelterIcon.svelte";
 
     .shelter-button {
         cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
+
+    .shelter-button:hover, .active {
+        color: #ff9100;
+    }
+
 
 </style>
 
-<div class="shelter-button" on:click={block}>
+<div class="shelter-button" on:click={block} class:active={shelter}>
     <ShelterIcon icon={directionIcon}></ShelterIcon>
 </div>

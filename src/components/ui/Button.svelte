@@ -45,7 +45,7 @@ button {
 
 .weight-primary:hover {
     background-color: white;
-    color: black;
+    color: rgba(0, 0, 0, 0.7);
 }
 
 .weight-secondary {
@@ -67,6 +67,7 @@ button {
 
 .size-large {
     padding: 1em;
+    font-size: large;
 }
 
 .disable {

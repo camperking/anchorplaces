@@ -15,7 +15,7 @@
 
     .wrapper {
         display: flex;
-        border-bottom: 3px solid gray;
+        border-bottom: 2px solid gray;
         transition: border-bottom-color 0.5s;
     }
 

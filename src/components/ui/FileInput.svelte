@@ -16,8 +16,8 @@
     .file-input {
         border: none;
         border-radius: 5px;
-        font-size: medium;
-        font-weight: bold;
+        /* font-size: medium; */
+        /* font-weight: bold; */
         cursor: pointer;
         transition: background-color 0.2s, color 0.2s;
         border: 1px solid #ff9100;
@@ -31,16 +31,17 @@
 
     label {
         cursor: pointer;
-        padding: 1em;
+        padding: 0.5em;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: large;
+        /* font-size: large; */
+        font-weight: 600;
     }
 
     .material-icons {
         margin-right: 0.5em;
-        font-size: 32px;
+        font-size: 24px;
     }
 
 </style>
@@ -50,7 +51,8 @@
     <label>
         <input 
             type="file"
-            bind:files >
+            bind:files
+            on:change >
         <span class="material-icons">{icon}</span>
         <slot />
     </label>
