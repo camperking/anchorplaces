@@ -48,6 +48,8 @@ async function login() {
 
                 if (data.sessionid) {
                     $session.id = data.sessionid;
+                    $session.userid = data.userid;
+                    $session.username = data.username;
                     goto(redirect);
                 } else {
                     error = data.error;

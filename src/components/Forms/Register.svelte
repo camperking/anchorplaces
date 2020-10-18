@@ -47,6 +47,8 @@ async function register() {
 
             if (data.sessionid) {
                 $session.id = data.sessionid;
+                $session.userid = data.userid;
+                $session.username = data.username;
                 dispatch('submit');
                 goto(redirect);
             } else {

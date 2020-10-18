@@ -1,8 +1,10 @@
+
 <script>
     import { onMount } from "svelte";
-import Services from "./Forms/Services.svelte";
+
     import Gallery from "./ui/Gallery.svelte";
-import ShelterInput from "./ui/ShelterInput/ShelterInput.svelte";
+    import ShelterInput from "./ui/ShelterInput/ShelterInput.svelte";
+    import Vote from "./Vote.svelte";
 
     export let place_id;
     let place = {};
@@ -55,7 +57,11 @@ import ShelterInput from "./ui/ShelterInput/ShelterInput.svelte";
 </style>
 
 <div class="place">
-    <h1>{place.name}</h1>
+    <div class="head">
+        <h1>{place.name}</h1>
+        <Vote object={place_id} key="place" />
+    </div>
+    
     
     <div class="gallery">
         <Gallery pictures={place.pictures} />

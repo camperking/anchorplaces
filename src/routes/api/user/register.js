@@ -31,8 +31,10 @@ export async function post(req, res, next) {
             const userid = result.ops[0]._id;
 
             req.session.userid = userid;
+
+            req.session.username = result.ops[0].username;
             
-            res.end(JSON.stringify({sessionid, userid }));
+            res.end(JSON.stringify({sessionid, userid, username: result.ops[0].username }));
 
         } else {         
             res.end('{ "error": "user exists" }');

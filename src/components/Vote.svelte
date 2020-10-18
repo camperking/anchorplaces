@@ -88,6 +88,7 @@ function voteDown () {
     vote {
         display: flex;
         align-items: center;
+        color: rgba(0, 0, 0, 0.7);
     }
 
     .voted {
@@ -106,7 +107,12 @@ function voteDown () {
         font-weight: 600;
         margin: 0 0.5em 0 0.5em;
     }
+
+    /* .material-icons {
+        color: rgba(0, 0, 0, 0.7);
+    } */
 </style>
+
 
 <vote>
 

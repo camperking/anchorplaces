@@ -11,7 +11,6 @@ import ShelterIcon from "./ShelterIcon.svelte";
     $: if (shelter) directionIcon = 'block';
 
     function block() {
-        console.log(shelter);
         if (!disabled) {
             if (directionIcon === 'block') {
                 directionIcon = direction;

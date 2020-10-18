@@ -22,8 +22,10 @@ export async function post(req, res, next) {
             
             req.session.id = sessionid;
             req.session.userid = user[0]._id;
+            // console.log(user[0])
+            req.session.username = user[0].username;
 
-            res.end(JSON.stringify({sessionid, userid: user[0]._id}));
+            res.end(JSON.stringify({sessionid, userid: user[0]._id, username: user[0].username}));
 
         } else {
             throw 'bad login';

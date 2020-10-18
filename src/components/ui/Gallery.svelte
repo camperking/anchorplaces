@@ -17,11 +17,15 @@
 <style>
 
     img {
-        width: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
     }
 
     .gallery {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        /* justify-content: space-between; */
         /* margin: 0 1em 0 1em; */
     }
 
@@ -29,13 +33,22 @@
 
         display: flex;
         
+        
     }
 
     .gallery-rest-pic {
-        position: relative;
         width: 20%;
         cursor: pointer;
+        opacity: 1;
+        transition: opacity .15s ease-in;
     }
+
+    .gallery-rest-pic:hover {
+        opacity: .7;
+        transition: opacity .15s ease-in;
+    }
+
+
 
 </style>
 
@@ -53,7 +66,7 @@
     <div class="gallery-rest">
         {#each pictures as pic, i }
             {#if i < 5}
-                <div class="gallery-rest-pic" on:click={() => changePic(i)}>
+                <div class="gallery-rest-pic" on:click={() => changePic(i)} transition:blur>
                     <img src={pic.url} alt={pic.title} />
                 </div>
             {/if}

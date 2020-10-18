@@ -25,7 +25,8 @@ dbInit().then(() => {
 		sapper.middleware({		// populate sapper store
 			session: (req, res) => ({
 				id: req.session.id,
-				userid: req.session.userid
+				userid: req.session.userid,
+				username: req.session.username
 			})
 		})
 	)

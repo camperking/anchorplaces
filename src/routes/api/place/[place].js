@@ -9,24 +9,34 @@ export async function get(req, res) {
 
     if (placeid == 0) {
 
-        const user = req.query.user ? new ObjectID(req.query.user) : '';
+        const query = {};
+
+        if (req.query.user) {
+            const author_id = new ObjectID(req.query.user);
+            query.author_id = author_id;
+        }
+
         const limit = req.query.limit ? Number(req.query.limit) : 8;
         const latitude = req.query.lat ? Number(req.query.lat) : 0;
         const longitude = req.query.lon ? Number(req.query.lon) : 0;
-        const dist = req.query.dist ? Number(req.query.dist) : 10000;
+        const dist = req.query.dist ? Number(req.query.dist * 1.865 * 1000) : 186500000;
 
-        const placesResult = await places.find({
-            $or: [{author_id: user}, {}],
-            position: {
-                $near: {
-                    $geometry: {
-                        type: 'Point',
-                        coordinates: [longitude, latitude]
-                    },
-                    $maxDistance: dist
-                }
+        query.position = {
+            $near: {
+                $geometry: {
+                    type: 'Point',
+                    coordinates: [longitude, latitude]
+                },
+                $maxDistance: dist
             }
-        }).limit(limit).toArray();
+        };
+
+        let placesResult = await places.find(query).limit(limit).toArray();
+
+        placesResult = await Promise.all(placesResult.map(async (place) => {
+            place.pictures = await getPictures(place.pictures);
+            return place;
+        }));
 
         res.end(JSON.stringify(placesResult));
 
@@ -40,15 +50,17 @@ export async function get(req, res) {
 
             if (place) {
                 
-                const pictures = await Promise.all(place.pictures.map(async (id) => {
+                // const pictures = await Promise.all(place.pictures.map(async (id) => {
 
-                    const pic_id = new ObjectID(id);
+                //     const pic_id = new ObjectID(id);
 
-                    const picsData = await pics.findOne({_id: pic_id});
+                //     const picsData = await pics.findOne({_id: pic_id});
                     
-                    return picsData;
+                //     return picsData;
 
-                }));
+                // }));
+
+                const pictures = await getPictures(place.pictures);
 
                 place.pictures = pictures;
                 // console.log(pictures);
@@ -116,5 +128,19 @@ export async function post(req, res) {
     } else {
         res.end('{ "error": "no access" }');
     }
+
+}
+
+
+async function getPictures(ids) {
+    return await Promise.all(ids.map(async (id) => {
+
+        const pic_id = new ObjectID(id);
+
+        const picsData = await pics.findOne({_id: pic_id});
+        
+        return picsData;
+
+    }));
 
 }

@@ -1,34 +1,52 @@
 <script context="module">
 
-// export async function preload() {
-// 	const res = await this.fetch('/api/place/rnd/0/14');
-// 	const places = await res.json();
-// 	return { places };
-// }
+export async function preload() {
+	const res = await this.fetch('/api/place/0');
+	const places = await res.json();
+	return { places };
+}
 </script>
 
 <script>
 	import { stores } from '@sapper/app';
 	import { onMount } from 'svelte';
-	import Place from '../components/Place.svelte';
+	import PlaceCard from '../components/PlaceCard.svelte';
 	import Button from '../components/ui/Button.svelte';
-	import NewButton from "../components/ui/NewButton.svelte";
-
+	
 	const { preloading, page, session } = stores();
 
-	// export let places;
+	export let places;
+	
 
 	onMount(() => {
 		//console.log($session.id);
-		
- 	 });
+		getLocation(position => {
+			console.log(position);
+		});
+	});
+
+
+	  
+	function getLocation(cb) {
+        // GPSMessage = 'Waiting for permission...';
+        if (navigator.geolocation) {
+            // GPSMessage = 'Waiting for position...';
+            navigator.geolocation.getCurrentPosition(position => {
+                // GPSMessage = 'Position found';
+                let latitude = position.coords.latitude;
+				let longitude = position.coords.longitude;
+				console.log(latitude);
+				console.log(longitude);
+				cb({ latitude: position.coords.latitude, longitude: position.coords.longitude });
+                // openTab = 'Map';
+            });
+        } else {
+            // GPSMessage = 'Position not available';
+        }
+    }
 </script>
 
 <style>
-
-	p {
-		margin: 1em auto;
-	}
 
 	.fab {
 		position: fixed;
@@ -52,10 +70,9 @@
 	</a>
 </div>
 
-<!-- <Place /> -->
+<h1>Featured</h1>
 
-<!-- {#each places as place}
-<Place place={place} />
-{/each} -->
+{#each places as place}
+	<PlaceCard {place} />
+{/each}
 
-<p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>
