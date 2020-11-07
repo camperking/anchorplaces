@@ -49,6 +49,8 @@ export async function post(req, res) {
                 pic.author_id = user._id;
                 pic.category = req.query.category;
                 pic.uploaded = new Date();
+
+                // needs validation
                 pic.title = '';
                 pic.desc = '';
     
@@ -105,6 +107,33 @@ export async function put(req, res) {
 
 export async function del(req, res) {
 
+    const user = await authenticate(req.session.id);
+
+    if (user) {
+
+        try {
+
+            const _id = new ObjectID(req.params.pic);
+    
+            const pic = await pics.findOne({_id});
+
+            if (pic.author_id.toString() === user._id.toString()) {       // user is author of picture
+
+                pics.deleteOne({_id});
+
+                res.end('{ "success": true }');
+
+            } else {
+                res.end('{ "error": "no access" }');
+            }
+
+        } catch (err) {
+            res.end('{ "error": "invalid id" }');
+        }
+
+    } else {
+        res.end('{ "error": "no access" }');
+    }
     
 
 }

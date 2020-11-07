@@ -3,7 +3,11 @@
 
     export let pictures = [];
 
-    // let showPic = pictures.map(() => true);
+    async function remove(i) {
+        const _id = pictures[i]._id;
+        await fetch('api/picUpload/' + _id, { method: 'DELETE' });
+        pictures = pictures.filter(pic => pic._id != _id);
+    }
 
 </script>
 
@@ -12,7 +16,7 @@
 </style>
 
 <div class="pic-group">
-    {#each pictures as pic}
-        <Pic {pic}></Pic>
+    {#each pictures as pic, i}
+        <Pic {pic} on:remove={() => remove(i)}></Pic>
     {/each}
 </div>

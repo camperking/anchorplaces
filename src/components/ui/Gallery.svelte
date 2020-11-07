@@ -10,7 +10,7 @@
         
         activePic = -1;
 
-        setTimeout(() => {activePic = i}, 400)
+        setTimeout(() => {activePic = i}, 400);
     }
 </script>
 
@@ -25,8 +25,6 @@
     .gallery {
         display: flex;
         flex-direction: column;
-        /* justify-content: space-between; */
-        /* margin: 0 1em 0 1em; */
     }
 
     .gallery-rest {
@@ -56,7 +54,7 @@
 
         {#each pictures as pic, i}
             {#if i == activePic}
-                <div class="gallery-main" transition:blur>
+                <div class="gallery-main" in:blur>
                     <img src={pic.url} alt="anchorplace" />
                 </div>
             {/if}
@@ -66,7 +64,7 @@
     <div class="gallery-rest">
         {#each pictures as pic, i }
             {#if i < 5}
-                <div class="gallery-rest-pic" on:click={() => changePic(i)} transition:blur>
+                <div class="gallery-rest-pic" on:click={() => changePic(i)} in:blur>
                     <img src={pic.url} alt={pic.title} />
                 </div>
             {/if}

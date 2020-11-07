@@ -38,7 +38,8 @@ export async function get(req, res) {
             return place;
         }));
 
-        res.end(JSON.stringify(placesResult));
+        res.end(JSON.stringify(placesResult))
+
 
     } else {
 
@@ -49,31 +50,10 @@ export async function get(req, res) {
             const place = await places.findOne({_id});
 
             if (place) {
-                
-                // const pictures = await Promise.all(place.pictures.map(async (id) => {
-
-                //     const pic_id = new ObjectID(id);
-
-                //     const picsData = await pics.findOne({_id: pic_id});
-                    
-                //     return picsData;
-
-                // }));
 
                 const pictures = await getPictures(place.pictures);
 
                 place.pictures = pictures;
-                // console.log(pictures);
-                // place.pictures.map(id => {
-
-                //     const pic_id = new ObjectID(id);
-
-                //     const picsData = await pics.findOne({_id: pic_id});
-                    
-                //     // console.log();
-
-                // });
-
 
                 res.end(JSON.stringify(place));
             } else {
@@ -91,7 +71,6 @@ export async function get(req, res) {
 
 
 export async function post(req, res) {
-    // console.log(req.body);
 
     const user = await authenticate(req.session.id);
 

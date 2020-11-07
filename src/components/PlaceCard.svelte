@@ -1,9 +1,8 @@
 <script>
     import Gallery from "./ui/Gallery.svelte";
-import Link from "./ui/Link.svelte";
-import MapLink from "./ui/MapLink.svelte";
-import Vote from "./Vote.svelte";
-
+    import Link from "./ui/Link.svelte";
+    import MapLink from "./ui/MapLink.svelte";
+    import Vote from "./Vote.svelte";
 
     export let place;
 
@@ -13,9 +12,6 @@ import Vote from "./Vote.svelte";
 
     .place-card {
         display: flex;
-        /* justify-content: space-between; */
-        /* justify-items: stretch; */
-        /* align-self: stretch; */
         border: 1px solid black;
         border-radius: 5px;
         margin-bottom: 1em;

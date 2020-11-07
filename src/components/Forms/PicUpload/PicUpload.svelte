@@ -49,7 +49,7 @@
 
 <div class="pic-upload">
 
-    <PicGroup pictures={pictureData} />
+    <PicGroup bind:pictures={pictureData} />
     
     <FileInput bind:files on:change={picUpload} >Add Picture</FileInput>
 

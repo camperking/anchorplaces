@@ -1,7 +1,11 @@
 <script>
+    import { createEventDispatcher } from 'svelte';
+
     import TextInput from '../../ui/TextInput.svelte';
     import TextField from '../../ui/TextField.svelte';
     import Button from '../../ui/Button.svelte';
+
+    const dispatch = createEventDispatcher();
 
     const headers = {'Content-Type': 'application/json'};
 
@@ -23,7 +27,7 @@
             body: JSON.stringify(body)
         }).then(res => res.json());
             
-        console.log(response);
+        // console.log(response);
         disableSave = true;
 
     }
@@ -59,9 +63,12 @@
     }
 
     .delete {
-        
+        cursor: pointer;
         top: 0;
-    
+    }
+
+    .delete:hover {
+        color: #ff9100;
     }
 
     @media screen and (max-width: 600px) {
@@ -84,13 +91,17 @@
             on:change={() => disableSave = false} />
 
         <TextField
-                bind:value={pic.desc}
-                placeholder="please give a short description what you can see here"
-                on:change={() => disableSave = false} />
+            bind:value={pic.desc}
+            placeholder="please give a short description what you can see here"
+            on:change={() => disableSave = false} />
 
         <Button on:click={save} disable={disableSave} >Save</Button>
 
-        <div class="delete material-icons">delete_outline</div>
+        <div 
+            class="delete material-icons"
+            on:click={() => dispatch('remove', pic._id)}>
+            delete_outline
+        </div>
 
     </div>
     
